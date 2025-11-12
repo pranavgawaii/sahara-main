@@ -1,0 +1,56 @@
+{
+  "header": {
+    "menu": "مینو",
+    "profile": "پروفائل",
+    "settings": "سیٹنگز",
+    "logout": "سائن آؤٹ",
+    "emergency": "ہنگامی مدد"
+  },
+  "footer": {
+    "privacy": "رازداری کی پالیسی",
+    "terms": "خدمات کی شرائط",
+    "contact": "ہم سے رابطہ کریں",
+    "accessibility": "رسائی",
+    "about": "صحارہ کے بارے میں"
+  },
+  "forms": {
+    "required_field": "یہ فیلڈ ضروری ہے",
+    "invalid_email": "براہ کرم درست ای میل درج کریں",
+    "password_min": "پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے",
+    "confirm_password": "پاس ورڈ میل نہیں کھاتے",
+    "age_verification": "آپ کی عمر 18 سال ہونی چاہیے یا سرپرست کی رضامندی ہونی چاہیے"
+  },
+  "buttons": {
+    "primary": "شروع کریں",
+    "secondary": "مزید جانیں",
+    "ghost": "ابھی چھوڑیں",
+    "danger": "ڈیلیٹ کریں",
+    "success": "جاری رکھیں"
+  },
+  "status": {
+    "online": "آن لائن",
+    "offline": "آف لائن",
+    "connecting": "جڑ رہا ہے...",
+    "loading": "لوڈ ہو رہا ہے...",
+    "saving": "محفوظ ہو رہا ہے...",
+    "error": "خرابی ہوئی",
+    "success": "کامیابی"
+  },
+  "tooltips": {
+    "anonymous": "آپ کی شناخت محفوظ ہے",
+    "encrypted": "تمام ڈیٹا خفیہ ہے",
+    "moderated": "مواد کی حفاظت کے لیے نگرانی کی جاتی ہے",
+    "optional": "یہ فیلڈ اختیاری ہے",
+    "help": "مزید معلومات کے لیے کلک کریں"
+  },
+  "modal": {
+    "close": "موڈل بند کریں",
+    "confirm": "عمل کی تصدیق کریں",
+    "cancel": "عمل منسوخ کریں"
+  },
+  "accessibility": {
+    "skip_to_content": "مواد پر جائیں",
+    "screen_reader_only": "صرف اسکرین ریڈر کے لیے",
+    "keyboard_navigation": "کی بورڈ نیویگیشن دستیاب"
+  }
+}

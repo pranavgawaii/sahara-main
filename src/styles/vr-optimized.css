@@ -1,0 +1,318 @@
+/* VR-Optimized Styles for Desktop Virtual Reality */
+
+/* Base VR Layout Optimizations */
+.vr-optimized-layout {
+  /* Optimize for VR viewport dimensions */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* VR Environment Grid Optimizations */
+.vr-environment-grid {
+  /* Ensure consistent spacing for VR interaction */
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 1920px) {
+  .vr-environment-grid {
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .vr-environment-grid {
+    gap: 2.5rem;
+    padding: 2rem;
+  }
+}
+
+/* VR Environment Cards */
+.vr-environment-card {
+  /* Optimize card dimensions for VR interaction */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.vr-environment-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(147, 51, 234, 0.2);
+}
+
+.vr-environment-card:active {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* VR Category Grid */
+.vr-category-grid {
+  gap: 1rem;
+}
+
+@media (min-width: 1440px) {
+  .vr-category-grid {
+    gap: 1.5rem;
+  }
+}
+
+/* VR Button Optimizations */
+.vr-button {
+  /* Larger touch targets for VR controllers */
+  min-height: 48px;
+  min-width: 120px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vr-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.vr-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* VR Text Optimizations */
+.vr-text-large {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.vr-text-medium {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.vr-text-small {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* High DPI Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .vr-environment-card {
+    border-width: 0.5px;
+  }
+  
+  .vr-text-large {
+    font-size: 1.375rem;
+  }
+  
+  .vr-text-medium {
+    font-size: 1.125rem;
+  }
+}
+
+/* Ultra-wide Display Support */
+@media (min-aspect-ratio: 21/9) {
+  .vr-optimized-layout {
+    max-width: 90vw;
+    margin: 0 auto;
+  }
+  
+  .vr-environment-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* VR Performance Optimizations */
+.vr-performance-optimized {
+  /* Reduce repaints and reflows */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* VR Animation Optimizations */
+.vr-smooth-animation {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduce motion for VR comfort */
+@media (prefers-reduced-motion: reduce) {
+  .vr-environment-card {
+    transition: none;
+  }
+  
+  .vr-environment-card:hover {
+    transform: none;
+  }
+  
+  .vr-button:hover {
+    transform: none;
+  }
+}
+
+/* VR Focus Indicators */
+.vr-focusable:focus {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.vr-focusable:focus-visible {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.2);
+}
+
+/* VR Loading States */
+.vr-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.vr-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: vr-shimmer 1.5s infinite;
+}
+
+@keyframes vr-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* VR Status Indicators */
+.vr-status-active {
+  position: relative;
+}
+
+.vr-status-active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: vr-pulse 2s infinite;
+}
+
+@keyframes vr-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* VR Accessibility Enhancements */
+.vr-high-contrast {
+  filter: contrast(1.2) brightness(1.1);
+}
+
+.vr-large-text {
+  font-size: 1.5rem;
+  line-height: 1.8;
+}
+
+/* VR Error States */
+.vr-error {
+  border: 2px solid #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+
+.vr-error-text {
+  color: #fca5a5;
+  font-weight: 500;
+}
+
+/* VR Success States */
+.vr-success {
+  border: 2px solid #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+}
+
+.vr-success-text {
+  color: #6ee7b7;
+  font-weight: 500;
+}
+
+/* VR Modal Optimizations */
+.vr-modal {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.vr-modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: auto;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* VR Responsive Breakpoints */
+@media (min-width: 1280px) {
+  .vr-container-xl {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .vr-container-2xl {
+    max-width: 1536px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .vr-container-3xl {
+    max-width: 1920px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .vr-container-4xl {
+    max-width: 2560px;
+  }
+}
+
+/* VR Print Styles (for documentation) */
+@media print {
+  .vr-optimized-layout {
+    background: white;
+    color: black;
+  }
+  
+  .vr-environment-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
