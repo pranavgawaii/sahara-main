@@ -1,4 +1,5 @@
 # sahara-main
+# Wellbeing Buddy - Student Mental Health Platform
 
 A comprehensive mental health and wellbeing platform designed specifically for students, featuring real-time peer support, wellness tracking, crisis intervention, and accessibility-first design.
 
