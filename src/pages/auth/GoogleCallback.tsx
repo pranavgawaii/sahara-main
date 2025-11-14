@@ -57,7 +57,7 @@ const GoogleCallback: React.FC = () => {
         if (isNewUser) {
           navigate('/onboarding', { replace: true })
         } else {
-          const redirectPath = userType === 'student' ? '/dashboard' : '/counselor-dashboard'
+          const redirectPath = userType === 'student' ? '/dashboard' : '/counselor/dashboard'
           navigate(redirectPath, { replace: true })
         }
       } catch (err) {
