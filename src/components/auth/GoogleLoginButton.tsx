@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { GoogleAuthService } from '@/lib/googleAuth'
 import { useAuthStore } from '@/stores/authStore'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useNavigate } from 'react-router-dom'
+import { useGoogleLogin } from '@react-oauth/google'
+import { GoogleAuthService } from '@/lib/googleAuth'
 
 interface GoogleLoginButtonProps {
   userType?: 'student' | 'counselor'
@@ -21,7 +22,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   variant = 'outline',
   size = 'default',
   className = '',
-  usePopup = false,
+  usePopup = true,
   onSuccess,
   onError
 }) => {
@@ -30,15 +31,12 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  const handleGoogleLogin = async () => {
-    setIsLoading(true)
-    
-    try {
-      if (usePopup) {
-        // Use popup method
-        const { user, isNewUser } = await GoogleAuthService.signInWithGooglePopup(userType)
-        
-        // Update auth store
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setIsLoading(true)
+        const user = await GoogleAuthService.getUserInfo(tokenResponse.access_token)
+
         const userData = {
           id: user.id,
           email: user.email,
@@ -47,15 +45,14 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
           picture: user.picture,
           googleId: user.id
         }
-        
-        login(userData, 'google-auth-token')
+
+        login(userData, tokenResponse.access_token)
 
         toast({
           title: 'Success!',
-          description: `Welcome ${isNewUser ? 'to' : 'back,'} ${user.name}!`,
+          description: `Welcome ${user.name}!`,
         })
 
-        // Redirect based on user role
         if (userType === 'counselor') {
           navigate('/counselor/dashboard')
         } else {
@@ -63,23 +60,34 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
         }
 
         onSuccess?.(user)
-      } else {
-        // Use redirect method
-        GoogleAuthService.signInWithGoogle()
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Authentication failed'
+        toast({
+          title: 'Authentication Failed',
+          description: errorMessage,
+          variant: 'destructive',
+        })
+        onError?.(errorMessage)
+      } finally {
+        setIsLoading(false)
       }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Authentication failed'
-      
+    },
+    onError: () => {
       toast({
         title: 'Authentication Failed',
-        description: errorMessage,
+        description: 'Google authentication failed',
         variant: 'destructive',
       })
-
-      onError?.(errorMessage)
-    } finally {
       setIsLoading(false)
-    }
+      onError?.('Google authentication failed')
+    },
+    ux_mode: usePopup ? 'popup' : 'redirect',
+    scope: 'openid email profile',
+  })
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true)
+    googleLogin()
   }
 
   return (
