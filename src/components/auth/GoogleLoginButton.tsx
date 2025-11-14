@@ -4,8 +4,6 @@ import { useAuthStore } from '@/stores/authStore'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useNavigate } from 'react-router-dom'
-import { useGoogleLogin } from '@react-oauth/google'
-import { GoogleAuthService } from '@/lib/googleAuth'
 import { useSignIn } from '@clerk/clerk-react'
 
 interface GoogleLoginButtonProps {
@@ -23,7 +21,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   variant = 'outline',
   size = 'default',
   className = '',
-  usePopup = true,
+  usePopup = false,
   onSuccess,
   onError
 }) => {
@@ -33,60 +31,6 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   const navigate = useNavigate()
   const { isLoaded, signIn } = useSignIn()
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        setIsLoading(true)
-        const user = await GoogleAuthService.getUserInfo(tokenResponse.access_token)
-
-        const userData = {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: userType,
-          picture: user.picture,
-          googleId: user.id
-        }
-
-        login(userData, tokenResponse.access_token)
-
-        toast({
-          title: 'Success!',
-          description: `Welcome ${user.name}!`,
-        })
-
-        if (userType === 'counselor') {
-          navigate('/counselor/dashboard')
-        } else {
-          navigate('/dashboard')
-        }
-
-        onSuccess?.(user)
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Authentication failed'
-        toast({
-          title: 'Authentication Failed',
-          description: errorMessage,
-          variant: 'destructive',
-        })
-        onError?.(errorMessage)
-      } finally {
-        setIsLoading(false)
-      }
-    },
-    onError: () => {
-      toast({
-        title: 'Authentication Failed',
-        description: 'Google authentication failed',
-        variant: 'destructive',
-      })
-      setIsLoading(false)
-      onError?.('Google authentication failed')
-    },
-    ux_mode: usePopup ? 'popup' : 'redirect',
-    scope: 'openid email profile',
-  })
-
   const handleGoogleLogin = async () => {
     setIsLoading(true)
     try {
@@ -94,12 +38,12 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
       if (clerkKey && isLoaded && signIn) {
         await signIn.authenticateWithRedirect({
           strategy: 'oauth_google',
-          redirectUrl: '/login',
+          redirectUrl: '/auth/sign-in',
           redirectUrlComplete: userType === 'counselor' ? '/counselor/dashboard' : '/dashboard',
         })
         return
       }
-      googleLogin()
+      throw new Error('Authentication provider unavailable')
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : 'Authentication failed'
       toast({ title: 'Authentication Failed', description: errorMessage, variant: 'destructive' })
