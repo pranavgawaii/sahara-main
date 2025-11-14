@@ -20,6 +20,7 @@
     "ci": "npm run type-check && npm run lint && npm run test:run && npm run build"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.55.0",
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",

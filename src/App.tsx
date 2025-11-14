@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ClerkProvider } from "@clerk/clerk-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -30,6 +31,9 @@ import UserProfile from "./pages/UserProfile";
 import Logout from "./pages/Logout";
 import NotFound from "./pages/NotFound";
 import GoogleCallback from "./pages/auth/GoogleCallback";
+import ClerkSignInPage from "./pages/auth/ClerkSignInPage";
+import ClerkSignUpPage from "./pages/auth/ClerkSignUpPage";
+import ClerkAuthSync from "./components/auth/ClerkAuthSync";
 import MentalHealthGateway from "./pages/MentalHealthGateway";
 import AnxietySupport from "./pages/mental-health/AnxietySupport";
 import CareerSupport from "./pages/mental-health/CareerSupport";
@@ -50,6 +54,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || ""}>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
         <TooltipProvider>
           <AudioManagerProvider>
@@ -60,6 +65,7 @@ const App = () => {
              <NotificationContainer />
              <Toaster />
              <Sonner />
+             <ClerkAuthSync />
              <BrowserRouter>
           <Routes>
             {/* Public Routes */}
@@ -67,6 +73,8 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/student/login" element={<StudentLoginPage />} />
             <Route path="/counselor/login" element={<CounselorLoginPage />} />
+            <Route path="/auth/sign-in" element={<ClerkSignInPage />} />
+            <Route path="/auth/sign-up" element={<ClerkSignUpPage />} />
             <Route path="/auth/google/callback" element={<GoogleCallback />} />
             
             {/* Protected Student Routes */}
@@ -274,6 +282,7 @@ const App = () => {
            </AudioManagerProvider>
          </TooltipProvider>
        </GoogleOAuthProvider>
+      </ClerkProvider>
      </QueryClientProvider>
   );
 };

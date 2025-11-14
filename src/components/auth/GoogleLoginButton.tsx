@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useNavigate } from 'react-router-dom'
 import { useGoogleLogin } from '@react-oauth/google'
 import { GoogleAuthService } from '@/lib/googleAuth'
+import { useSignIn } from '@clerk/clerk-react'
 
 interface GoogleLoginButtonProps {
   userType?: 'student' | 'counselor'
@@ -30,6 +31,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   const { setUser, login } = useAuthStore()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const { isLoaded, signIn } = useSignIn()
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -87,7 +89,24 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
 
   const handleGoogleLogin = async () => {
     setIsLoading(true)
-    googleLogin()
+    try {
+      const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+      if (clerkKey && isLoaded && signIn) {
+        await signIn.authenticateWithRedirect({
+          strategy: 'oauth_google',
+          redirectUrl: '/login',
+          redirectUrlComplete: userType === 'counselor' ? '/counselor/dashboard' : '/dashboard',
+        })
+        return
+      }
+      googleLogin()
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : 'Authentication failed'
+      toast({ title: 'Authentication Failed', description: errorMessage, variant: 'destructive' })
+      onError?.(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
