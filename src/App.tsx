@@ -50,10 +50,13 @@ const App = () => {
     initializePerformanceMonitoring();
   }, []);
 
+  const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined;
+  const hasClerk = !!(clerkKey && clerkKey !== 'pk_test_placeholder');
+
   return (
     <QueryClientProvider client={queryClient}>
-      {import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ? (
-        <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+      {hasClerk ? (
+        <ClerkProvider publishableKey={clerkKey}>
         <TooltipProvider>
           <AudioManagerProvider>
             <BackgroundAudio />

@@ -4,7 +4,6 @@ import { useAuthStore } from '@/stores/authStore'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useNavigate } from 'react-router-dom'
-import { useSignIn } from '@clerk/clerk-react'
 
 interface GoogleLoginButtonProps {
   userType?: 'student' | 'counselor'
@@ -29,18 +28,13 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   const { setUser, login } = useAuthStore()
   const { toast } = useToast()
   const navigate = useNavigate()
-  const { isLoaded, signIn } = useSignIn()
 
   const handleGoogleLogin = async () => {
     setIsLoading(true)
     try {
       const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-      if (clerkKey && isLoaded && signIn) {
-        await signIn.authenticateWithRedirect({
-          strategy: 'oauth_google',
-          redirectUrl: '/auth/sign-in',
-          redirectUrlComplete: userType === 'counselor' ? '/counselor/dashboard' : '/dashboard',
-        })
+      if (clerkKey) {
+        navigate('/auth/sign-in')
         return
       }
       throw new Error('Authentication provider unavailable')
