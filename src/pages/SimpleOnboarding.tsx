@@ -76,7 +76,7 @@ const SimpleOnboarding = () => {
     if (role === 'student') {
       navigate('/dashboard');
     } else if (role === 'counsellor') {
-      navigate('/counsellor-dashboard');
+      navigate('/counsellor/dashboard');
     } else {
       navigate('/dashboard');
     }
