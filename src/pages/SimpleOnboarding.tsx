@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ArrowRight, Shield, CheckCircle } from 'lucide-react';
 import { useStore } from '@/stores/useStore';
+import { useAuth } from '@clerk/clerk-react';
 
 // Mock institutions data
 const INSTITUTIONS = [
@@ -30,12 +31,29 @@ const ROLES = [
 const SimpleOnboarding = () => {
   const { t } = useTranslation(['common', 'ui']);
   const navigate = useNavigate();
-  const { setStudent, completeOnboarding } = useStore();
+  const { setStudent, completeOnboarding, student } = useStore();
+  const { isSignedIn, user } = useAuth();
   
   const [currentStep, setCurrentStep] = useState(0);
   const [institution, setInstitution] = useState('');
   const [role, setRole] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Check if user is already authenticated through Clerk
+  useEffect(() => {
+    if (isSignedIn && user && student) {
+      console.log('SimpleOnboarding: User already authenticated through Clerk and has student data');
+      // User is already authenticated, skip onboarding and go to dashboard
+      if (student.role === 'counsellor') {
+        navigate('/counselor/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    } else if (isSignedIn && user && !student) {
+      console.log('SimpleOnboarding: User authenticated through Clerk but no student data, continuing onboarding');
+      // User is authenticated but student data not yet synced, continue with onboarding
+    }
+  }, [isSignedIn, user, student, navigate]);
 
   const totalSteps = 2;
   const progress = ((currentStep + 1) / totalSteps) * 100;
@@ -53,22 +71,47 @@ const SimpleOnboarding = () => {
   };
 
   const handleComplete = () => {
-    // Create anonymous profile
-    const anonId = `anon_${Math.random().toString(36).substr(2, 9)}`;
-    
-    setStudent({
-      token: anonId,
-      institutionCode: institution,
-      ephemeralHandle: anonId,
-      language: 'en',
-      role: role as 'student' | 'counsellor' | 'staff',
-      consentFlags: {
-        dataProcessing: true,
-        anonymousChat: true,
-        counselorContact: false
-      },
-      createdAt: new Date()
-    });
+    if (isSignedIn && user) {
+      // User is authenticated through Clerk, update existing student data
+      console.log('SimpleOnboarding: Updating Clerk user with onboarding data');
+      
+      // Get existing student data or create new one
+      const existingStudent = student || {
+        token: user.id,
+        ephemeralHandle: user.fullName || user.username || `user_${user.id.substr(0, 8)}`,
+        language: 'en',
+        consentFlags: {
+          dataProcessing: true,
+          anonymousChat: true,
+          counselorContact: true
+        },
+        createdAt: new Date()
+      };
+      
+      setStudent({
+        ...existingStudent,
+        institutionCode: institution,
+        role: role as 'student' | 'counsellor' | 'staff',
+      });
+    } else {
+      // Anonymous user flow (original logic)
+      console.log('SimpleOnboarding: Creating anonymous profile');
+      const anonId = `anon_${Math.random().toString(36).substr(2, 9)}`;
+      
+      setStudent({
+        token: anonId,
+        institutionCode: institution,
+        ephemeralHandle: anonId,
+        language: 'en',
+        role: role as 'student' | 'counsellor' | 'staff',
+        consentFlags: {
+          dataProcessing: true,
+          anonymousChat: true,
+          counselorContact: false
+        },
+        createdAt: new Date()
+      });
+    }
 
     completeOnboarding();
     
@@ -76,7 +119,7 @@ const SimpleOnboarding = () => {
     if (role === 'student') {
       navigate('/dashboard');
     } else if (role === 'counsellor') {
-      navigate('/counsellor-dashboard');
+      navigate('/counselor/dashboard');
     } else {
       navigate('/dashboard');
     }

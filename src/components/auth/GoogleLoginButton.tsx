@@ -34,7 +34,8 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
     try {
       const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
       if (clerkKey) {
-        navigate('/auth/sign-in')
+        const roleParam = userType === 'counselor' ? 'counselor' : 'student'
+        navigate(`/auth/sign-in?role=${roleParam}`)
         return
       }
       throw new Error('Authentication provider unavailable')

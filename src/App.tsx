@@ -40,6 +40,7 @@ import RelationshipSupport from "./pages/mental-health/RelationshipSupport";
 import FinancialSupport from "./pages/mental-health/FinancialSupport";
 import AntiRaggingSupport from "./pages/mental-health/AntiRaggingSupport";
 import InterfaithSupport from "./pages/mental-health/InterfaithSupport";
+import TestDashboardSections from "./pages/TestDashboardSections";
 import './i18n';
 
 const queryClient = new QueryClient();
@@ -76,6 +77,7 @@ const App = () => {
             <Route path="/counselor/login" element={<CounselorLoginPage />} />
             <Route path="/auth/sign-in" element={<ClerkSignInPage />} />
             <Route path="/auth/sign-up" element={<ClerkSignUpPage />} />
+            <Route path="/test-sections" element={<TestDashboardSections />} />
             
             {/* Protected Student Routes */}
             <Route 

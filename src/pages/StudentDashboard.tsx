@@ -100,6 +100,9 @@ const StudentDashboard = () => {
   const { t } = useTranslation(['common', 'ui']);
   const navigate = useNavigate();
   const { student } = useStore();
+  
+  console.log('StudentDashboard: student data', student);
+  
   const [selectedCounsellor, setSelectedCounsellor] = useState<string | null>(null);
   const [showScreening, setShowScreening] = useState(false);
   const [assessmentResult, setAssessmentResult] = useState(null);
@@ -109,6 +112,24 @@ const StudentDashboard = () => {
     counselorId: string;
     counselorName: string;
   }>({ type: null, counselorId: '', counselorName: '' });
+
+  // Check if student data is available
+  if (!student) {
+    console.log('StudentDashboard: No student data found, this might be a problem');
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center space-y-4">
+          <div className="text-red-600">Student data not found. Please try logging in again.</div>
+          <button 
+            onClick={() => navigate('/login')}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const quickActions = [
     {
@@ -162,6 +183,8 @@ const StudentDashboard = () => {
   ];
 
   const [activeSection, setActiveSection] = useState<'overview' | 'vr' | 'games' | 'music' | 'social'>('overview');
+  
+  console.log('StudentDashboard: activeSection =', activeSection);
 
   const getContactIcon = (method: string) => {
     switch (method) {
@@ -184,9 +207,12 @@ const StudentDashboard = () => {
   };
 
   const handleSectionClick = (action: { section?: string; action?: () => void; cursorType: string }) => {
+    console.log('handleSectionClick called with:', action);
     if (action.section) {
+      console.log('Setting active section to:', action.section);
       setActiveSection(action.section as any);
     } else if (action.action) {
+      console.log('Calling action function');
       action.action();
     }
   };
