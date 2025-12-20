@@ -36,7 +36,7 @@ const LandingPage = () => {
   };
 
   const handleStartScreening = () => {
-    navigate('/onboarding');
+    navigate('/auth/sign-in?role=student');
   };
 
   const languages = [
@@ -163,7 +163,7 @@ const LandingPage = () => {
             <h3 className="text-2xl font-semibold text-foreground mb-6">Choose Your Portal</h3>
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {/* Student Portal */}
-              <Card className="glass-card p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => navigate('/student/login')}>
+              <Card className="glass-card p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => navigate('/auth/sign-in?role=student')}>
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 group-hover:scale-110 transition-transform">
                     <GraduationCap className="h-8 w-8 text-white" />
@@ -203,19 +203,19 @@ const LandingPage = () => {
           >
             <Button
               size="lg"
-              onClick={() => navigate('/simple-onboarding')}
+              onClick={() => navigate('/auth/sign-in?role=student')}
               className="btn-ambient px-8 py-4 text-lg font-medium"
             >
-              Quick Setup
+              Get Started
               <ArrowRight className="ml-3 w-6 h-6" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate('/onboarding')}
+              onClick={() => navigate('/auth/sign-in?role=student')}
               className="px-8 py-4 text-lg font-medium glass-card"
             >
-              Full Assessment
+              Take Assessment
             </Button>
           </motion.div>
 

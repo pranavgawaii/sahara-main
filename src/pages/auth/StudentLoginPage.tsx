@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Separator } from '../../components/ui/separator';
-import GoogleLoginButton from '../../components/auth/GoogleLoginButton';
 import { GraduationCap, Shield, Heart, BookOpen, MessageCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const StudentLoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect directly to Clerk sign-in page for students
+    navigate('/auth/sign-in?role=student');
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       {/* Background decoration */}

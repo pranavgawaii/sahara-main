@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -6,15 +6,16 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { 
-  Shield, 
-  ArrowRight, 
-  CheckCircle, 
+import {
+  Shield,
+  ArrowRight,
+  CheckCircle,
   MessageCircle,
   Heart,
   Users,
   Sparkles
 } from 'lucide-react';
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { useStore } from '@/stores/useStore';
 import LiquidButton from '@/components/enhanced/LiquidButton';
 import { pageVariants, staggerContainer, cardVariants, floatingVariants } from '@/utils/animations';
@@ -35,7 +36,7 @@ const CONSENT_STEPS: ConsentStep[] = [
   },
   {
     id: 'anonymous_chat',
-    title: 'Anonymous Chat Sessions', 
+    title: 'Anonymous Chat Sessions',
     description: 'Chat sessions are encrypted and anonymous. You will be assigned a temporary handle that changes each session.',
     required: true
   },
@@ -51,10 +52,20 @@ const OnboardingFlow = () => {
   const { t } = useTranslation(['common']);
   const navigate = useNavigate();
   const { setStudent, completeOnboarding } = useStore();
-  
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+
   const [currentStep, setCurrentStep] = useState(0);
   const [consent, setConsent] = useState<Record<string, boolean>>({});
 
+  // Check if user is already authenticated through Clerk
+  useEffect(() => {
+    if (isSignedIn && user) {
+      console.log("OnboardingFlow: User already authenticated through Clerk");
+      // For Clerk users, we still want to show the onboarding/assessment flow
+      // but we can pre-fill some data if needed
+    }
+  }, [isSignedIn, user]);
   const totalSteps = 2; // Consent + Welcome to Chat
 
   // Check if all required consent is given
@@ -73,15 +84,24 @@ const OnboardingFlow = () => {
   };
 
   const handleComplete = () => {
-    // Create anonymous student profile
+    // For Clerk-authenticated users, preserve their existing data
+    if (isSignedIn && user) {
+      console.log("OnboardingFlow: Completing onboarding for Clerk user");
+      // Just complete onboarding without creating new student data
+      completeOnboarding();
+      navigate("/dashboard");
+      return;
+    }
+
+    // For anonymous users, create student profile as before
     const studentToken = `student_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const ephemeralHandle = `Guest-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-    
+
     setStudent({
       token: studentToken,
-      institutionCode: 'default',
+      institutionCode: "default",
       ephemeralHandle,
-      language: 'en',
+      language: "en",
       consentFlags: {
         dataProcessing: consent.data_processing || false,
         anonymousChat: consent.anonymous_chat || false,
@@ -91,9 +111,7 @@ const OnboardingFlow = () => {
     });
 
     completeOnboarding();
-    
-    // Navigate to dashboard where users can access all features including mental health
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleBack = () => {
@@ -149,7 +167,7 @@ const OnboardingFlow = () => {
         ))}
       </motion.div>
 
-      <motion.div 
+      <motion.div
         className="text-center mb-12 relative z-10"
         variants={staggerContainer}
         animate="animate"
@@ -179,8 +197,8 @@ const OnboardingFlow = () => {
             }}
           />
         </motion.div>
-        
-        <motion.h2 
+
+        <motion.h2
           className="text-3xl font-playfair font-semibold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -188,8 +206,8 @@ const OnboardingFlow = () => {
         >
           Your Privacy & Consent
         </motion.h2>
-        
-        <motion.p 
+
+        <motion.p
           className="text-muted-foreground text-lg max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -199,7 +217,7 @@ const OnboardingFlow = () => {
         </motion.p>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         className="space-y-6 relative z-10"
         variants={staggerContainer}
         animate="animate"
@@ -223,7 +241,7 @@ const OnboardingFlow = () => {
                     onCheckedChange={(checked) => handleConsentChange(step.id, checked as boolean)}
                     className="w-6 h-6 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                   />
-                  
+
                   {/* Ripple effect when checked */}
                   {consent[step.id] && (
                     <motion.div
@@ -240,10 +258,10 @@ const OnboardingFlow = () => {
                     />
                   )}
                 </motion.div>
-                
+
                 <div className="flex-1">
-                  <Label 
-                    htmlFor={step.id} 
+                  <Label
+                    htmlFor={step.id}
                     className="font-semibold text-lg text-foreground cursor-pointer hover:text-primary transition-colors duration-300 flex items-center gap-2"
                   >
                     {step.title}
@@ -266,8 +284,8 @@ const OnboardingFlow = () => {
                       </motion.div>
                     )}
                   </Label>
-                  
-                  <motion.p 
+
+                  <motion.p
                     className="text-muted-foreground mt-2 leading-relaxed"
                     initial={{ opacity: 0.7 }}
                     whileHover={{ opacity: 1 }}
@@ -316,8 +334,8 @@ const OnboardingFlow = () => {
           }}
         />
       </motion.div>
-      
-      <motion.h2 
+
+      <motion.h2
         className="text-4xl font-playfair font-semibold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -325,7 +343,7 @@ const OnboardingFlow = () => {
       >
         Welcome to Your Mental Health Companion
       </motion.h2>
-      
+
       <motion.div
         className="max-w-3xl mx-auto space-y-6"
         initial={{ opacity: 0, y: 20 }}
@@ -333,11 +351,11 @@ const OnboardingFlow = () => {
         transition={{ delay: 0.4 }}
       >
         <p className="text-xl text-muted-foreground leading-relaxed">
-          I'm here to listen, understand, and help you navigate your mental health journey. 
-          Through our conversation, I'll identify what's on your mind and provide personalized 
+          I'm here to listen, understand, and help you navigate your mental health journey.
+          Through our conversation, I'll identify what's on your mind and provide personalized
           support and resources.
         </p>
-        
+
         <div className="grid md:grid-cols-3 gap-6 mt-12">
           <motion.div
             className="flex flex-col items-center p-6 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10"
@@ -350,7 +368,7 @@ const OnboardingFlow = () => {
               Share your thoughts and feelings in a safe, judgment-free space
             </p>
           </motion.div>
-          
+
           <motion.div
             className="flex flex-col items-center p-6 rounded-lg bg-gradient-to-br from-accent/10 to-primary/10"
             whileHover={{ scale: 1.05 }}
@@ -362,7 +380,7 @@ const OnboardingFlow = () => {
               Receive tailored suggestions and resources based on your unique needs
             </p>
           </motion.div>
-          
+
           <motion.div
             className="flex flex-col items-center p-6 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10"
             whileHover={{ scale: 1.05 }}
@@ -384,7 +402,7 @@ const OnboardingFlow = () => {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -399,7 +417,7 @@ const OnboardingFlow = () => {
           </motion.div>
 
           {/* Progress indicator */}
-          <motion.div 
+          <motion.div
             className="mb-12"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -409,9 +427,8 @@ const OnboardingFlow = () => {
               {Array.from({ length: totalSteps }, (_, i) => (
                 <motion.div
                   key={i}
-                  className={`w-4 h-4 rounded-full transition-all duration-500 ${
-                    i <= currentStep ? 'bg-primary shadow-lg shadow-primary/50' : 'bg-muted'
-                  }`}
+                  className={`w-4 h-4 rounded-full transition-all duration-500 ${i <= currentStep ? 'bg-primary shadow-lg shadow-primary/50' : 'bg-muted'
+                    }`}
                   animate={{
                     scale: i === currentStep ? [1, 1.2, 1] : 1,
                   }}
@@ -434,7 +451,7 @@ const OnboardingFlow = () => {
           </motion.div>
 
           {/* Navigation */}
-          <motion.div 
+          <motion.div
             className="flex justify-between items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
