@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -23,7 +23,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        
+
         // Primary brand colors
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -31,14 +31,14 @@ export default {
           soft: "hsl(var(--primary-soft))",
           glow: "hsl(var(--primary-glow))",
         },
-        
+
         // Accent colors
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
           soft: "hsl(var(--accent-soft))",
         },
-        
+
         // Semantic colors
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -52,26 +52,26 @@ export default {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
-        
+
         // Muted and subtle colors
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
           light: "hsl(var(--muted-light))",
         },
-        
+
         // Card and surface colors
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
           glass: "hsl(var(--card-glass))",
         },
-        
+
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        
+
         // Problem-specific theme colors
         "relationship-warm": "hsl(var(--relationship-warm))",
         "career-focused": "hsl(var(--career-focused))",
@@ -80,11 +80,11 @@ export default {
         "sleep-dark": "hsl(var(--sleep-dark))",
         "social-open": "hsl(var(--social-open))",
         "mixed-flexible": "hsl(var(--mixed-flexible))",
-        
+
         // Soothing backgrounds
         "soothing-bg": "hsl(var(--soothing-bg))",
         "dark-soothing": "hsl(var(--dark-soothing))",
-        
+
         // Sidebar colors
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -137,11 +137,11 @@ export default {
           "50%": { transform: "translateY(-20px)" },
         },
         "ambient-pulse": {
-          "0%, 100%": { 
-            boxShadow: "0 0 20px hsl(var(--primary) / 0.1)" 
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(var(--primary) / 0.1)"
           },
-          "50%": { 
-            boxShadow: "0 0 40px hsl(var(--primary) / 0.2), 0 0 60px hsl(var(--accent) / 0.1)" 
+          "50%": {
+            boxShadow: "0 0 40px hsl(var(--primary) / 0.2), 0 0 60px hsl(var(--accent) / 0.1)"
           },
         },
         breathe: {

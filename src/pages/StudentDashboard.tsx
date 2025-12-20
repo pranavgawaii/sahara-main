@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  MessageCircle, 
-  Calendar, 
-  BookOpen, 
+import {
+  MessageCircle,
+  Calendar,
+  BookOpen,
   AlertCircle,
   Users,
   Phone,
@@ -37,12 +37,15 @@ import { StatsDashboard } from '@/components/screening/StatsDashboard';
 import { RecoverySuggestions } from '@/components/screening/RecoverySuggestions';
 import { EducationalResources } from '@/components/screening/EducationalResources';
 import { useStore } from '@/stores/useStore';
+import { useUser } from '@clerk/clerk-react';
 import { ChatWindow } from '@/components/communication/ChatWindow';
 import { VideoCall } from '@/components/communication/VideoCall';
 import { VoiceCall } from '@/components/communication/VoiceCall';
 import { VRWellnessHub } from '@/components/vr/VRWellnessHub';
 import ARCounsellorInteraction from '@/components/ar/ARCounsellorInteraction';
 import ARButton from '@/components/ui/ar-button';
+import { ModeToggle } from '@/components/mode-toggle';
+import { User as UserIcon } from 'lucide-react';
 
 // Mock counsellor data
 const COUNSELLORS = [
@@ -63,7 +66,7 @@ const COUNSELLORS = [
     }
   },
   {
-    id: 'c2', 
+    id: 'c2',
     name: 'Akeela P',
     designation: 'HOD of Psychology Department',
     department: 'Christ University, Bangalore',
@@ -82,7 +85,7 @@ const COUNSELLORS = [
     id: 'c3',
     name: 'Dr. Priya Sharma',
     designation: 'Mental Health Counsellor',
-    department: 'Student Support Services', 
+    department: 'Student Support Services',
     specializations: ['Family Issues', 'Cultural Adjustment', 'Sleep Issues'],
     rating: 4.7,
     availableSlots: ['Tomorrow 9:00 AM', 'Tomorrow 2:00 PM', 'Day after 11:00 AM'],
@@ -100,9 +103,10 @@ const StudentDashboard = () => {
   const { t } = useTranslation(['common', 'ui']);
   const navigate = useNavigate();
   const { student } = useStore();
-  
+  const { user } = useUser();
+
   console.log('StudentDashboard: student data', student);
-  
+
   const [selectedCounsellor, setSelectedCounsellor] = useState<string | null>(null);
   const [showScreening, setShowScreening] = useState(false);
   const [assessmentResult, setAssessmentResult] = useState(null);
@@ -115,12 +119,24 @@ const StudentDashboard = () => {
 
   // Check if student data is available
   if (!student) {
+    // If we have a clerk user but no student data yet, we're likely syncing
+    if (user) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="text-gray-600">Setting up your profile...</p>
+          </div>
+        </div>
+      );
+    }
+
     console.log('StudentDashboard: No student data found, this might be a problem');
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center space-y-4">
           <div className="text-red-600">Student data not found. Please try logging in again.</div>
-          <button 
+          <button
             onClick={() => navigate('/login')}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
@@ -157,7 +173,7 @@ const StudentDashboard = () => {
       cursorType: 'game'
     },
     {
-      title: 'Relaxation Hub', 
+      title: 'Relaxation Hub',
       description: 'Simple audio controls',
       icon: Heart,
       color: 'success',
@@ -183,7 +199,7 @@ const StudentDashboard = () => {
   ];
 
   const [activeSection, setActiveSection] = useState<'overview' | 'vr' | 'games' | 'music' | 'social'>('overview');
-  
+
   console.log('StudentDashboard: activeSection =', activeSection);
 
   const getContactIcon = (method: string) => {
@@ -227,7 +243,7 @@ const StudentDashboard = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-success/3 rounded-full blur-3xl animate-pulse float" style={{ animationDelay: '4s' }} />
         <div className="absolute top-20 right-1/4 w-64 h-64 bg-warning/3 rounded-full blur-3xl animate-pulse float" style={{ animationDelay: '1s' }} />
       </div>
-      
+
       {/* Header */}
       <header className="relative z-10 p-6" role="banner">
         <div className="max-w-6xl mx-auto">
@@ -258,10 +274,21 @@ const StudentDashboard = () => {
                 </p>
               </div>
             </div>
-            <Badge variant="outline" className="px-4 py-2">
-              <Shield className="w-4 h-4 mr-2" />
-              Anonymous Mode
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="px-4 py-2 hidden md:flex">
+                <Shield className="w-4 h-4 mr-2" />
+                Anonymous Mode
+              </Badge>
+              <ModeToggle />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate('/profile')}
+                title="User Dashboard"
+              >
+                <UserIcon className="h-[1.2rem] w-[1.2rem]" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -269,7 +296,7 @@ const StudentDashboard = () => {
       {/* Main Content */}
       <main className="relative z-10 px-6 pb-12" role="main">
         <div className="max-w-6xl mx-auto">
-          
+
           {/* Overview Section */}
           {activeSection === 'overview' && (
             <div className="space-y-8">
@@ -289,7 +316,7 @@ const StudentDashboard = () => {
                           transition={{ delay: index * 0.1 }}
                           className="w-full max-w-sm"
                         >
-                          <Card 
+                          <Card
                             className={`glass-card p-6 hover:scale-105 transition-all duration-200 cursor-pointer border ${getColorClass(action.color)} w-full h-48 flex flex-col justify-center`}
                             onClick={() => handleSectionClick(action)}
                             onKeyDown={(e) => {
@@ -317,7 +344,7 @@ const StudentDashboard = () => {
                       );
                     })}
                   </div>
-                  
+
                   {/* Second row - 3 cards centered */}
                   <div className="flex justify-center">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center max-w-4xl">
@@ -331,7 +358,7 @@ const StudentDashboard = () => {
                             transition={{ delay: (index + 3) * 0.1 }}
                             className="w-full max-w-sm"
                           >
-                            <Card 
+                            <Card
                               className={`glass-card p-6 hover:scale-105 transition-all duration-200 cursor-pointer border ${getColorClass(action.color)} w-full h-48 flex flex-col justify-center`}
                               onClick={() => handleSectionClick(action)}
                               onKeyDown={(e) => {
@@ -378,7 +405,7 @@ const StudentDashboard = () => {
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="grid md:grid-cols-3 gap-4 mb-6">
                       <div className="text-center p-4 rounded-lg bg-blue-50">
                         <Activity className="w-6 h-6 text-blue-600 mx-auto mb-2" />
@@ -396,7 +423,7 @@ const StudentDashboard = () => {
                         <p className="text-xs text-purple-700">Your data is protected</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex gap-3 justify-center">
                       <Button
                         onClick={() => setShowScreening(true)}
@@ -405,7 +432,7 @@ const StudentDashboard = () => {
                         <Brain className="w-4 h-4 mr-2" />
                         Start Assessment
                       </Button>
-                      
+
                       {assessmentResult && (
                         <Button
                           variant="outline"
@@ -464,7 +491,7 @@ const StudentDashboard = () => {
                         </div>
                       </div>
                     </Card>
-                    
+
                     {/* Statistics Dashboard */}
                     <StatsDashboard
                       currentAssessment={{
@@ -474,7 +501,7 @@ const StudentDashboard = () => {
                         anxietyLevel: assessmentResult?.anxietyLevel || ''
                       }}
                     />
-                    
+
                     {/* Recovery Suggestions */}
                     <RecoverySuggestions
                       phq9Score={assessmentResult?.phq9Score || 0}
@@ -482,14 +509,14 @@ const StudentDashboard = () => {
                       depressionLevel={assessmentResult?.depressionLevel || ''}
                       anxietyLevel={assessmentResult?.anxietyLevel || ''}
                     />
-                    
+
                     {/* Educational Resources */}
-                     <EducationalResources
-                       phq9Score={assessmentResult?.phq9Score || 0}
-                       gad7Score={assessmentResult?.gad7Score || 0}
-                       depressionLevel={assessmentResult?.depressionLevel || ''}
-                       anxietyLevel={assessmentResult?.anxietyLevel || ''}
-                     />
+                    <EducationalResources
+                      phq9Score={assessmentResult?.phq9Score || 0}
+                      gad7Score={assessmentResult?.gad7Score || 0}
+                      depressionLevel={assessmentResult?.depressionLevel || ''}
+                      anxietyLevel={assessmentResult?.anxietyLevel || ''}
+                    />
                   </div>
                 )}
               </section>
@@ -550,9 +577,9 @@ const StudentDashboard = () => {
                         <p className="text-xs font-medium text-muted-foreground mb-2">Connect via:</p>
                         <div className="grid grid-cols-1 gap-2">
                           {counsellor.contactMethods.includes('chat') && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="w-full justify-start"
                               onClick={() => {
                                 setActiveCommunication({
@@ -567,9 +594,9 @@ const StudentDashboard = () => {
                             </Button>
                           )}
                           {counsellor.contactMethods.includes('video') && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="w-full justify-start"
                               onClick={() => {
                                 setActiveCommunication({
@@ -584,9 +611,9 @@ const StudentDashboard = () => {
                             </Button>
                           )}
                           {counsellor.contactMethods.includes('phone') && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="w-full justify-start"
                               onClick={() => {
                                 setActiveCommunication({
@@ -601,9 +628,9 @@ const StudentDashboard = () => {
                             </Button>
                           )}
                           {counsellor.contactMethods.includes('in-person') && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="w-full justify-start"
                               onClick={() => {
                                 // Book in-person appointment
@@ -615,17 +642,17 @@ const StudentDashboard = () => {
                             </Button>
                           )}
                           <ARButton
-                             onClick={() => {
-                               setActiveCommunication({
-                                 type: 'ar',
-                                 counselorId: counsellor.id,
-                                 counselorName: counsellor.name
-                               });
-                             }}
-                             className="w-full justify-start"
-                           >
-                             AR Interaction
-                           </ARButton>
+                            onClick={() => {
+                              setActiveCommunication({
+                                type: 'ar',
+                                counselorId: counsellor.id,
+                                counselorName: counsellor.name
+                              });
+                            }}
+                            className="w-full justify-start"
+                          >
+                            AR Interaction
+                          </ARButton>
                         </div>
                       </div>
 
@@ -654,16 +681,16 @@ const StudentDashboard = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <Button 
-                      variant="destructive" 
+                    <Button
+                      variant="destructive"
                       className="w-full"
                       onClick={() => window.open('tel:988', '_self')}
                     >
                       <Phone className="w-4 h-4 mr-2" />
                       Crisis Hotline: 988
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="w-full border-red-300 text-red-700 hover:bg-red-50"
                       onClick={() => navigate('/emergency-resources')}
                     >
@@ -691,8 +718,8 @@ const StudentDashboard = () => {
           )}
 
           {/* Audio Section */}
-        {activeSection === 'music' && (
-          <div data-cursor="audio">
+          {activeSection === 'music' && (
+            <div data-cursor="audio">
               <RelaxationHub />
             </div>
           )}
