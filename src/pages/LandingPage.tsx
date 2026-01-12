@@ -5,6 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Menu, Plus, MessageCircle, ChevronDown, Check, Quote, Shield, Linkedin, Twitter, Instagram, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FeaturesGrid } from '@/components/landing/FeaturesGrid';
+import { StatsSection } from '@/components/landing/StatsSection';
+import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
+import { PricingSection } from '@/components/landing/PricingSection';
+import { FAQSection } from '@/components/landing/FAQSection';
+import { UnifiedFooter } from '@/components/landing/UnifiedFooter';
 
 export const LandingPage = () => {
     const navigate = useNavigate();
@@ -169,7 +174,12 @@ export const LandingPage = () => {
 
             {/* FEATURES SECTION (Modular) */}
             <div className="relative z-10 bg-slate-50">
+                <StatsSection />
                 <FeaturesGrid />
+                <TestimonialsSection />
+                <PricingSection />
+                <FAQSection />
+                <UnifiedFooter />
             </div>
         </div>
     );
