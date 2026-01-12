@@ -10,6 +10,7 @@ export const UnifiedFooter = () => {
                     {/* Brand Column */}
                     <div className="md:col-span-4">
                         <div className="flex items-center gap-3 mb-6">
+                            <img src="/sahara.png" alt="Sahara Logo" className="h-10 w-10 object-cover rounded-xl" />
                             <span className="text-2xl font-bold font-dm">Sahara</span>
                         </div>
                         <p className="text-slate-400 font-inter leading-relaxed mb-6">

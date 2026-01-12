@@ -27,7 +27,10 @@ import {
   Headset,
   Eye,
   Hand,
-  LogOut
+  LogOut,
+  User as UserIcon,
+  Settings,
+  UserCircle
 } from 'lucide-react';
 import { MindfulnessGames } from '@/components/games/MindfulnessGames';
 import { RelaxationHub } from '@/components/music/RelaxationHub';
@@ -38,7 +41,7 @@ import { StatsDashboard } from '@/components/screening/StatsDashboard';
 import { RecoverySuggestions } from '@/components/screening/RecoverySuggestions';
 import { EducationalResources } from '@/components/screening/EducationalResources';
 import { useStore } from '@/stores/useStore';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, useClerk, UserProfile } from '@clerk/clerk-react';
 import { ChatWindow } from '@/components/communication/ChatWindow';
 import { VideoCall } from '@/components/communication/VideoCall';
 import { VoiceCall } from '@/components/communication/VoiceCall';
@@ -46,7 +49,6 @@ import { VRWellnessHub } from '@/components/vr/VRWellnessHub';
 import ARCounsellorInteraction from '@/components/ar/ARCounsellorInteraction';
 import ARButton from '@/components/ui/ar-button';
 import { ModeToggle } from '@/components/mode-toggle';
-import { User as UserIcon } from 'lucide-react';
 
 // Mock counsellor data
 const COUNSELLORS = [
@@ -199,7 +201,13 @@ const StudentDashboard = () => {
     }
   ];
 
-  const [activeSection, setActiveSection] = useState<'overview' | 'vr' | 'games' | 'music' | 'social'>('overview');
+  const { signOut } = useClerk();
+  const [activeSection, setActiveSection] = useState<'overview' | 'vr' | 'games' | 'music' | 'social' | 'profile'>('overview');
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   console.log('StudentDashboard: activeSection =', activeSection);
 
@@ -284,7 +292,7 @@ const StudentDashboard = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate('/profile')}
+                onClick={() => setActiveSection('profile')}
                 title="User Dashboard"
               >
                 <UserIcon className="h-[1.2rem] w-[1.2rem]" />
@@ -292,7 +300,7 @@ const StudentDashboard = () => {
               <Button
                 variant="destructive"
                 size="icon"
-                onClick={() => navigate('/logout')}
+                onClick={handleLogout}
                 title="Sign Out"
                 className="ml-1"
               >
@@ -742,44 +750,71 @@ const StudentDashboard = () => {
             </div>
           )}
         </div>
+
+        {/* Profile Section */}
+        {activeSection === 'profile' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <Card className="p-6 bg-white/50 backdrop-blur-sm border-0 shadow-lg">
+              <UserProfile
+                path="/student/dashboard"
+                routing="hash"
+                appearance={{
+                  elements: {
+                    card: "shadow-none border-none bg-transparent w-full",
+                    rootBox: "w-full",
+                    navbar: "hidden"
+                  }
+                }}
+              />
+            </Card>
+          </div>
+        )}
       </main>
 
       {/* Communication Components */}
-      {activeCommunication.type === 'chat' && (
-        <ChatWindow
-          counselorId={activeCommunication.counselorId}
-          counselorName={activeCommunication.counselorName}
-          onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
-        />
-      )}
+      {
+        activeCommunication.type === 'chat' && (
+          <ChatWindow
+            counselorId={activeCommunication.counselorId}
+            counselorName={activeCommunication.counselorName}
+            onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
+          />
+        )
+      }
 
-      {activeCommunication.type === 'video' && (
-        <VideoCall
-          counselorId={activeCommunication.counselorId}
-          counselorName={activeCommunication.counselorName}
-          onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
-        />
-      )}
+      {
+        activeCommunication.type === 'video' && (
+          <VideoCall
+            counselorId={activeCommunication.counselorId}
+            counselorName={activeCommunication.counselorName}
+            onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
+          />
+        )
+      }
 
-      {activeCommunication.type === 'voice' && (
-        <VoiceCall
-          counselorId={activeCommunication.counselorId}
-          counselorName={activeCommunication.counselorName}
-          onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
-        />
-      )}
+      {
+        activeCommunication.type === 'voice' && (
+          <VoiceCall
+            counselorId={activeCommunication.counselorId}
+            counselorName={activeCommunication.counselorName}
+            onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
+          />
+        )
+      }
 
-      {activeCommunication.type === 'ar' && (
-        <ARCounsellorInteraction
-          counsellor={COUNSELLORS.find(c => c.id === activeCommunication.counselorId)!}
-          isOpen={true}
-          onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
-          onSessionStart={(sessionId) => {
-            console.log('AR session started:', sessionId);
-          }}
-        />
-      )}
-    </div>
+      {
+        activeCommunication.type === 'ar' && (
+          <ARCounsellorInteraction
+            counsellor={COUNSELLORS.find(c => c.id === activeCommunication.counselorId)!}
+            isOpen={true}
+            onClose={() => setActiveCommunication({ type: null, counselorId: '', counselorName: '' })}
+            onSessionStart={(sessionId) => {
+              console.log('AR session started:', sessionId);
+            }}
+          />
+        )
+      }
+    </div >
   );
 };
 

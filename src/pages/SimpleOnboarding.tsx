@@ -14,7 +14,7 @@ import { useAuth } from '@clerk/clerk-react';
 // Mock institutions data
 const INSTITUTIONS = [
   "University of Kashmir",
-  "National Institute of Technology Srinagar", 
+  "National Institute of Technology Srinagar",
   "Government Medical College Srinagar",
   "Jammu University",
   "IIT Delhi",
@@ -33,7 +33,7 @@ const SimpleOnboarding = () => {
   const navigate = useNavigate();
   const { setStudent, completeOnboarding, student } = useStore();
   const { isSignedIn, user } = useAuth();
-  
+
   const [currentStep, setCurrentStep] = useState(0);
   const [institution, setInstitution] = useState('');
   const [role, setRole] = useState('');
@@ -58,7 +58,7 @@ const SimpleOnboarding = () => {
   const totalSteps = 2;
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
-  const filteredInstitutions = INSTITUTIONS.filter(inst => 
+  const filteredInstitutions = INSTITUTIONS.filter(inst =>
     inst.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -74,7 +74,7 @@ const SimpleOnboarding = () => {
     if (isSignedIn && user) {
       // User is authenticated through Clerk, update existing student data
       console.log('SimpleOnboarding: Updating Clerk user with onboarding data');
-      
+
       // Get existing student data or create new one
       const existingStudent = student || {
         token: user.id,
@@ -87,7 +87,7 @@ const SimpleOnboarding = () => {
         },
         createdAt: new Date()
       };
-      
+
       setStudent({
         ...existingStudent,
         institutionCode: institution,
@@ -97,7 +97,7 @@ const SimpleOnboarding = () => {
       // Anonymous user flow (original logic)
       console.log('SimpleOnboarding: Creating anonymous profile');
       const anonId = `anon_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       setStudent({
         token: anonId,
         institutionCode: institution,
@@ -114,7 +114,7 @@ const SimpleOnboarding = () => {
     }
 
     completeOnboarding();
-    
+
     // Navigate based on role
     if (role === 'student') {
       navigate('/dashboard');
@@ -136,14 +136,14 @@ const SimpleOnboarding = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
       gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-      
+
       oscillator.start();
       oscillator.stop(audioContext.currentTime + 0.3);
     } catch (e) {
@@ -159,7 +159,7 @@ const SimpleOnboarding = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="space-y-6"
     >
-      <motion.div 
+      <motion.div
         className="text-center mb-8"
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
@@ -172,7 +172,7 @@ const SimpleOnboarding = () => {
         >
           <Shield className="w-8 h-8 text-white" />
         </motion.div>
-        <motion.h2 
+        <motion.h2
           className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -180,7 +180,7 @@ const SimpleOnboarding = () => {
         >
           Select your institution
         </motion.h2>
-        <motion.p 
+        <motion.p
           className="text-muted-foreground text-sm max-w-md mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -208,7 +208,7 @@ const SimpleOnboarding = () => {
             className="w-full p-4 border-2 border-border rounded-2xl bg-background/80 focus:outline-none focus:ring-4 focus:ring-primary/30 focus:border-primary transition-all duration-300 text-lg"
             whileFocus={{ scale: 1.02 }}
           />
-          
+
           <div className="mt-6 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
             <AnimatePresence>
               {filteredInstitutions.map((inst, index) => (
@@ -217,13 +217,13 @@ const SimpleOnboarding = () => {
                   initial={{ opacity: 0, x: -20, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.95 }}
-                  transition={{ 
+                  transition={{
                     delay: index * 0.08,
                     type: "spring",
                     stiffness: 200,
                     damping: 20
                   }}
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.02,
                     y: -2,
                     transition: { duration: 0.2 }
@@ -233,11 +233,10 @@ const SimpleOnboarding = () => {
                     setInstitution(inst);
                     playSelectionSound();
                   }}
-                  className={`w-full text-left p-5 rounded-2xl transition-all duration-300 transform group ${
-                    institution === inst 
-                      ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-2 border-primary/50 text-primary shadow-lg' 
+                  className={`w-full text-left p-5 rounded-2xl transition-all duration-300 transform group ${institution === inst
+                      ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-2 border-primary/50 text-primary shadow-lg'
                       : 'bg-card/60 hover:bg-card/80 border-2 border-transparent hover:border-primary/20 hover:shadow-md'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-lg group-hover:text-primary transition-colors">
@@ -268,19 +267,19 @@ const SimpleOnboarding = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="space-y-6"
     >
-      <motion.div 
+      <motion.div
         className="text-center mb-8"
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1, 1.1, 1],
             rotate: [0, 5, -5, 0]
           }}
-          transition={{ 
-            duration: 2, 
+          transition={{
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -288,7 +287,7 @@ const SimpleOnboarding = () => {
         >
           <CheckCircle className="w-8 h-8 text-white" />
         </motion.div>
-        <motion.h2 
+        <motion.h2
           className="text-3xl font-bold mb-3 bg-gradient-to-r from-success to-accent bg-clip-text text-transparent"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -296,7 +295,7 @@ const SimpleOnboarding = () => {
         >
           I am a
         </motion.h2>
-        <motion.p 
+        <motion.p
           className="text-muted-foreground text-sm max-w-md mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -318,13 +317,13 @@ const SimpleOnboarding = () => {
                 key={roleOption.value}
                 initial={{ opacity: 0, x: -30, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
-                transition={{ 
+                transition={{
                   delay: index * 0.15,
                   type: "spring",
                   stiffness: 200,
                   damping: 20
                 }}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.03,
                   y: -3,
                   transition: { duration: 0.2 }
@@ -334,23 +333,21 @@ const SimpleOnboarding = () => {
                   setRole(roleOption.value);
                   playSelectionSound();
                 }}
-                className={`flex items-center space-x-4 p-6 rounded-2xl border-2 transition-all cursor-pointer group transform ${
-                  role === roleOption.value 
-                    ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-primary/50 shadow-lg' 
+                className={`flex items-center space-x-4 p-6 rounded-2xl border-2 transition-all cursor-pointer group transform ${role === roleOption.value
+                    ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-primary/50 shadow-lg'
                     : 'bg-card/60 hover:bg-card/80 border-transparent hover:border-primary/20 hover:shadow-md'
-                }`}
+                  }`}
               >
                 <motion.div
-                  animate={{ 
+                  animate={{
                     scale: role === roleOption.value ? [1, 1.2, 1] : 1,
                     rotate: role === roleOption.value ? [0, 360] : 0
                   }}
                   transition={{ duration: 0.5 }}
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    role === roleOption.value
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${role === roleOption.value
                       ? 'border-primary bg-primary'
                       : 'border-muted group-hover:border-primary'
-                  }`}
+                    }`}
                 >
                   {role === roleOption.value && (
                     <motion.div
@@ -360,7 +357,7 @@ const SimpleOnboarding = () => {
                     />
                   )}
                 </motion.div>
-                <Label 
+                <Label
                   className="flex-1 font-semibold text-xl cursor-pointer group-hover:text-primary transition-colors"
                 >
                   {roleOption.label === 'Student' && '🎓 '}
@@ -387,7 +384,7 @@ const SimpleOnboarding = () => {
     <div className="min-h-screen bg-gradient-soothing relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-ambient opacity-20" />
-      
+
       {/* Header */}
       <div className="relative z-10 p-6">
         <div className="max-w-2xl mx-auto">
@@ -399,7 +396,7 @@ const SimpleOnboarding = () => {
               We're here to help — quick setup so you can connect with your campus counsellors anonymously.
             </p>
           </div>
-          
+
           <Progress value={progress} className="mb-8 h-2" />
         </div>
       </div>
