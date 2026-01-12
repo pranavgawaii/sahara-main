@@ -26,7 +26,8 @@ import {
   BarChart3,
   Headset,
   Eye,
-  Hand
+  Hand,
+  LogOut
 } from 'lucide-react';
 import { MindfulnessGames } from '@/components/games/MindfulnessGames';
 import { RelaxationHub } from '@/components/music/RelaxationHub';
@@ -287,6 +288,15 @@ const StudentDashboard = () => {
                 title="User Dashboard"
               >
                 <UserIcon className="h-[1.2rem] w-[1.2rem]" />
+              </Button>
+              <Button
+                variant="destructive"
+                size="icon"
+                onClick={() => navigate('/logout')}
+                title="Sign Out"
+                className="ml-1"
+              >
+                <LogOut className="h-[1.2rem] w-[1.2rem]" />
               </Button>
             </div>
           </div>

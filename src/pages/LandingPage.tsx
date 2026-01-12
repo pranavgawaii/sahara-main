@@ -79,10 +79,7 @@ export const LandingPage = () => {
                 ))}
 
                 {/* Corner Borders */}
-                <div className="absolute top-[45px] left-[45px] w-[55px] h-[55px] border-l-[4px] border-t-[4px] border-white/90 rounded-tl-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
-                <div className="absolute top-[45px] right-[45px] w-[55px] h-[55px] border-r-[4px] border-t-[4px] border-white/90 rounded-tr-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
-                <div className="absolute bottom-[45px] left-[45px] w-[55px] h-[55px] border-l-[4px] border-b-[4px] border-white/90 rounded-bl-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
-                <div className="absolute bottom-[45px] right-[45px] w-[55px] h-[55px] border-r-[4px] border-b-[4px] border-white/90 rounded-br-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
+
             </div>
 
             {/* NAVIGATION BAR */}
