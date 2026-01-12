@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Separator } from '../../components/ui/separator';
+import { GraduationCap, Shield, Heart, BookOpen, MessageCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import SaharaAuthLayout from '@/components/layout/SaharaAuthLayout';
 import GoogleLoginButton from '../../components/auth/GoogleLoginButton';
-import { UserCheck, Shield, Stethoscope, Users, Calendar, AlertTriangle } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const CounselorLoginPage: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center p-4">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-        <div className="absolute top-40 left-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
-      </div>
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    // Redirect directly to Clerk sign-in page for students
+    // NOTE: In a real app we might not redirect if we want to show this landing first, 
+    // but the original code had this redirect. We'll keep the UI for now in case logic changes.
+    navigate('/auth/sign-in?role=student');
+  }, [navigate]);
+
+  return (
+    <SaharaAuthLayout>
       <div className="relative z-10 w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -28,102 +31,87 @@ const CounselorLoginPage: React.FC = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-full mb-4"
+              className="inline-flex items-center justify-center w-[80px] h-[80px] bg-white rounded-full mb-4 shadow-lg"
             >
-              <UserCheck className="h-8 w-8 text-white" />
+              <GraduationCap className="h-10 w-10 text-[#2E5A7D]" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Counselor Portal</h1>
-            <p className="text-gray-600">Professional mental health support platform</p>
+            <h1 className="text-3xl font-bold text-white font-dm mb-2">Student Portal</h1>
+            <p className="text-white/90 font-inter">Access your mental health support resources</p>
           </div>
 
           {/* Login Card */}
-          <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-xl font-semibold text-gray-900">
-                Welcome, Mental Health Professional
+          <Card className="shadow-[0_20px_60px_rgba(0,0,0,0.15)] border-0 bg-white/95 backdrop-blur-md rounded-[24px] overflow-hidden">
+            <CardHeader className="text-center pb-4 pt-8">
+              <CardTitle className="text-xl font-bold text-[#1A1A1A] font-dm">
+                Welcome Back, Student
               </CardTitle>
-              <CardDescription className="text-gray-600">
-                Access your counseling dashboard and student support tools
+              <CardDescription className="text-[#6B6B6B] font-inter">
+                Sign in to access your personalized mental health journey
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-6">
-              {/* Counselor Features */}
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <h3 className="font-medium text-purple-900 mb-3 flex items-center">
-                  <Stethoscope className="h-4 w-4 mr-2" />
-                  Professional Tools & Features:
+            <CardContent className="space-y-6 px-8 pb-8">
+              {/* Student Benefits */}
+              <div className="bg-[#F8F9FA] p-5 rounded-[16px] border border-[#E8E8E8]">
+                <h3 className="font-semibold text-[#2E5A7D] mb-3 flex items-center font-dm">
+                  <Heart className="h-4 w-4 mr-2" />
+                  What you'll get access to:
                 </h3>
-                <ul className="space-y-2 text-sm text-purple-800">
+                <ul className="space-y-2 text-sm text-[#4A4A4A] font-inter">
                   <li className="flex items-center">
-                    <Users className="h-3 w-3 mr-2" />
-                    Student management dashboard
+                    <MessageCircle className="h-3 w-3 mr-2 text-[#7BA5C8]" />
+                    Anonymous chat support
                   </li>
                   <li className="flex items-center">
-                    <Calendar className="h-3 w-3 mr-2" />
-                    Session scheduling & tracking
+                    <BookOpen className="h-3 w-3 mr-2 text-[#7BA5C8]" />
+                    Mental health resources
                   </li>
                   <li className="flex items-center">
-                    <AlertTriangle className="h-3 w-3 mr-2" />
-                    Crisis intervention alerts
+                    <GraduationCap className="h-3 w-3 mr-2 text-[#7BA5C8]" />
+                    Progress tracking tools
                   </li>
                 </ul>
               </div>
 
-              <Separator className="my-6" />
+              <Separator className="my-6 bg-[#E8E8E8]" />
 
               {/* Google Login */}
               <div className="space-y-4">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-4">
-                    Sign in with your professional Google account
+                  <p className="text-sm text-[#6B6B6B] font-inter mb-4">
+                    Sign in with your student Google account
                   </p>
                 </div>
-                
-                <GoogleLoginButton 
-                  userType="counselor"
+
+                <GoogleLoginButton
+                  userType="student"
                   variant="default"
                   size="lg"
-                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  className="w-full bg-[#2E5A7D] hover:bg-[#1A3A5A] font-dm font-medium text-white shadow-lg transition-all rounded-[12px]"
                 />
               </div>
 
-              {/* Professional Notice */}
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+              {/* Privacy Notice */}
+              <div className="bg-[#F0F7FA] p-4 rounded-[16px] border border-transparent">
                 <div className="flex items-start space-x-3">
-                  <Shield className="h-5 w-5 text-amber-600 mt-0.5" />
+                  <Shield className="h-5 w-5 text-[#2E5A7D] mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-amber-900">Professional Access</p>
-                    <p className="text-xs text-amber-800 mt-1">
-                      This portal is restricted to licensed mental health professionals.
-                      All activities are logged for compliance and security.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Compliance Notice */}
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <div className="flex items-start space-x-3">
-                  <Shield className="h-5 w-5 text-gray-600 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">HIPAA Compliance</p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      All patient data is encrypted and complies with HIPAA regulations.
-                      Unauthorized access is strictly prohibited.
+                    <p className="text-sm font-semibold text-[#2E5A7D] font-dm">Your Privacy Matters</p>
+                    <p className="text-xs text-[#4A4A4A] mt-1 font-inter leading-relaxed">
+                      All conversations are anonymous and encrypted. Your identity is protected.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Support Links */}
-              <div className="text-center pt-4">
-                <p className="text-xs text-gray-500 mb-2">
-                  Need professional support? Contact admin or
+              <div className="text-center pt-2">
+                <p className="text-xs text-[#6B6B6B] mb-2 font-inter">
+                  Need help? Contact student support or
                 </p>
-                <Link 
-                  to="/student/login" 
-                  className="text-xs text-purple-600 hover:text-purple-800 underline"
+                <Link
+                  to="/counselor/login"
+                  className="text-xs text-[#2E5A7D] hover:text-[#1A3A5A] font-medium underline font-inter"
                 >
                   Are you a student? Sign in here
                 </Link>
@@ -133,16 +121,16 @@ const CounselorLoginPage: React.FC = () => {
 
           {/* Footer */}
           <div className="text-center mt-6">
-            <Link 
-              to="/" 
-              className="text-sm text-gray-500 hover:text-gray-700 underline"
+            <Link
+              to="/"
+              className="text-sm text-white/80 hover:text-white font-inter transition-colors"
             >
               ← Back to home
             </Link>
           </div>
         </motion.div>
       </div>
-    </div>
+    </SaharaAuthLayout>
   );
 };
 

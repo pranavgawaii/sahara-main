@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Separator } from '../../components/ui/separator';
 import { GraduationCap, Shield, Heart, BookOpen, MessageCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import GoogleLoginButton from '../../components/auth/GoogleLoginButton';
 
 const StudentLoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -85,8 +86,8 @@ const StudentLoginPage: React.FC = () => {
                     Sign in with your student Google account
                   </p>
                 </div>
-                
-                <GoogleLoginButton 
+
+                <GoogleLoginButton
                   userType="student"
                   variant="default"
                   size="lg"
@@ -112,8 +113,8 @@ const StudentLoginPage: React.FC = () => {
                 <p className="text-xs text-gray-500 mb-2">
                   Need help? Contact student support or
                 </p>
-                <Link 
-                  to="/counselor/login" 
+                <Link
+                  to="/counselor/login"
                   className="text-xs text-blue-600 hover:text-blue-800 underline"
                 >
                   Are you a counselor? Sign in here
@@ -124,8 +125,8 @@ const StudentLoginPage: React.FC = () => {
 
           {/* Footer */}
           <div className="text-center mt-6">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-sm text-gray-500 hover:text-gray-700 underline"
             >
               ← Back to home

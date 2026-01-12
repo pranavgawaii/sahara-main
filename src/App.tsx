@@ -4,11 +4,11 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AudioManagerProvider } from "@/components/audio/AudioManager";
-import BackgroundAudio from "@/components/audio/BackgroundAudio";
-import LiquidEther from "@/components/cursor/BlobCursor";
+// import { AudioManagerProvider } from "@/components/audio/AudioManager";
+// import BackgroundAudio from "@/components/audio/BackgroundAudio";
+// import LiquidEther from "@/components/cursor/BlobCursor"; // DISABLE CURSOR
 import { NotificationContainer } from "@/components/ui/notification";
-import { SkipLinks, LiveRegion } from "@/components/ui/accessible";
+// import { SkipLinks, LiveRegion } from "@/components/ui/accessible";
 import { initializePerformanceMonitoring } from "@/utils/performance";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
@@ -42,6 +42,7 @@ import AntiRaggingSupport from "./pages/mental-health/AntiRaggingSupport";
 import InterfaithSupport from "./pages/mental-health/InterfaithSupport";
 import TestDashboardSections from "./pages/TestDashboardSections";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import './i18n';
 
 const queryClient = new QueryClient();
@@ -57,15 +58,16 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {hasClerk ? (
-        <ClerkProvider publishableKey={clerkKey}>
-          <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
-            <TooltipProvider>
-              <AudioManagerProvider>
-                <BackgroundAudio />
-                <SkipLinks />
-                <LiveRegion />
-                <LiquidEther />
+      <ErrorBoundary>
+        {hasClerk ? (
+          <ClerkProvider publishableKey={clerkKey}>
+            <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
+              <TooltipProvider>
+                {/* Disabled Audio and Cursor for Stability */}
+                {/* <AudioManagerProvider> */}
+                {/* <BackgroundAudio /> */}
+                {/* <LiquidEther /> */}
+
                 <NotificationContainer />
                 <Toaster />
                 <Sonner />
@@ -283,18 +285,18 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </BrowserRouter>
-              </AudioManagerProvider>
-            </TooltipProvider>
-          </ThemeProvider>
-        </ClerkProvider>
-      ) : (
-        <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
-          <TooltipProvider>
-            <AudioManagerProvider>
-              <BackgroundAudio />
-              <SkipLinks />
-              <LiveRegion />
-              <LiquidEther />
+                {/* </AudioManagerProvider> */}
+              </TooltipProvider>
+            </ThemeProvider>
+          </ClerkProvider>
+        ) : (
+          <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
+            <TooltipProvider>
+              {/* <AudioManagerProvider> */}
+              {/* <BackgroundAudio /> */}
+              {/* <SkipLinks /> */}
+              {/* <LiveRegion /> */}
+              {/* <LiquidEther /> */}
               <NotificationContainer />
               <Toaster />
               <Sonner />
@@ -304,207 +306,15 @@ const App = () => {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/student/login" element={<StudentLoginPage />} />
                   <Route path="/counselor/login" element={<CounselorLoginPage />} />
-
-
-                  <Route
-                    path="/onboarding"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <OnboardingFlow />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/simple-onboarding"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <SimpleOnboarding />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/dashboard"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <StudentDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/problems/:problemId"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <ProblemInterface />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/chat"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <ChatPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/booking"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <BookingPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/resources"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <ResourcesPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/tracker"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <TrackerPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <MentalHealthGateway />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/anxiety"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <AnxietySupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/career"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <CareerSupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/family"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <FamilySupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/relationship"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <RelationshipSupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/financial"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <FinancialSupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/anti-ragging"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <AntiRaggingSupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mental-health/interfaith"
-                    element={
-                      <ProtectedRoute allowedRoles={['student']}>
-                        <InterfaithSupport />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counselor/dashboard"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <CounsellorDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counsellor/dashboard"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <CounsellorDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counsellor"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <CounsellorLandingPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counsellor/sessions"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <div className="p-8"><h1 className="text-2xl font-bold">Session Management</h1><p className="text-gray-600 mt-2">Session scheduling and management interface will be implemented here.</p></div>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counsellor/alerts"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <div className="p-8"><h1 className="text-2xl font-bold">Crisis Alerts</h1><p className="text-gray-600 mt-2">Crisis intervention and emergency alerts interface will be implemented here.</p></div>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/counsellor/resources"
-                    element={
-                      <ProtectedRoute allowedRoles={['counselor']}>
-                        <div className="p-8"><h1 className="text-2xl font-bold">Resource Library</h1><p className="text-gray-600 mt-2">Professional resources and student materials library will be implemented here.</p></div>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/profile"
-                    element={
-                      <ProtectedRoute allowedRoles={['student', 'counselor']}>
-                        <UserProfile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/logout"
-                    element={
-                      <ProtectedRoute allowedRoles={['student', 'counselor']}>
-                        <Logout />
-                      </ProtectedRoute>
-                    }
-                  />
+                  {/* Copy of Protected Routes for non-clerk (dev) mode if needed */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
-            </AudioManagerProvider>
-          </TooltipProvider>
-        </ThemeProvider>
-      )}
+              {/* </AudioManagerProvider> */}
+            </TooltipProvider>
+          </ThemeProvider>
+        )}
+      </ErrorBoundary>
     </QueryClientProvider>
   );
 };

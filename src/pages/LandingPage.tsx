@@ -1,280 +1,181 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  Shield,
-  Heart,
-  MessageCircle,
-  Calendar,
-  BookOpen,
-  Headphones,
-  ArrowRight,
-  GraduationCap,
-  UserCheck,
-  Volume2,
-  VolumeX
-} from 'lucide-react';
-import { useStore } from '@/stores/useStore';
 import { useNavigate } from 'react-router-dom';
-import { useAudio } from '@/components/audio/AudioManager';
-import { ModeToggle } from '@/components/mode-toggle';
-import heroImage from '@/assets/hero-mental-health.jpg';
+import { useTranslation } from 'react-i18next';
+import { ArrowRight, Menu, Plus, MessageCircle, ChevronDown, Check, Quote, Shield, Linkedin, Twitter, Instagram, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { FeaturesGrid } from '@/components/landing/FeaturesGrid';
 
-const LandingPage = () => {
-  const { t, i18n } = useTranslation(['common', 'problems']);
-  const { setLanguage } = useStore();
-  const navigate = useNavigate();
-  const audio = useAudio();
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+export const LandingPage = () => {
+    const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
+    // Safety check for i18n
+    const [selectedLanguage, setSelectedLanguage] = useState(i18n?.language || 'en');
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
-  const handleLanguageChange = (lang: string) => {
-    setSelectedLanguage(lang);
-    setLanguage(lang);
-    i18n.changeLanguage(lang);
-  };
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-  const handleStartScreening = () => {
-    navigate('/auth/sign-in?role=student');
-  };
+    // Floating Particles - Optimized with useMemo to prevent infinite re-renders
+    const particles = React.useMemo(() => {
+        return Array.from({ length: 40 }).map((_, i) => ({
+            id: i,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            delay: `${Math.random() * 5}s`,
+            duration: `${6 + Math.random() * 8}s`,
+            size: `${2 + Math.random() * 3}px`,
+            opacity: 0.2 + Math.random() * 0.3,
+            blur: Math.random() > 0.5
+        }));
+    }, []);
 
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'hi', name: 'हिंदी', flag: '🇮🇳' },
-    { code: 'ks', name: 'کٲشُر', flag: '🏔️' }
-  ];
+    // Simplified variants to avoid type errors
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut" }
+        }
+    };
 
-  return (
-    <div className="min-h-screen bg-gradient-soothing relative overflow-hidden">
-      {/* Ambient Background Elements */}
-      <div className="absolute inset-0 bg-gradient-ambient opacity-30" />
+    return (
+        <div className="min-h-screen font-inter relative overflow-x-hidden bg-slate-50">
 
-      {/* Header */}
-      <header className="relative z-10 p-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <img
-              src="/sahara-logo.svg"
-              alt="Sahara Logo"
-              className="w-10 h-10"
-            />
-            <h1 className="text-xl font-playfair font-semibold text-foreground">
-              Sahara
-            </h1>
-          </motion.div>
-
-          <div className="flex items-center gap-4">
-            {/* Audio Control */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
+            {/* GLOBAL BACKGROUND GRADIENT - FRAME EFFECT */}
+            <div
+                className="fixed top-[15px] left-[15px] right-[15px] bottom-[15px] rounded-[30px] z-[0] overflow-hidden shadow-[0_0_0_15px_white]"
+                style={{
+                    background: 'linear-gradient(180deg, #6B9AC4 0%, #7FA8CB 50%, #A3C4DC 100%)',
+                }}
             >
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={audio.toggleMute}
-                className="p-2 hover:bg-primary/10 transition-colors rounded-full"
-                aria-label={audio.isMuted ? 'Unmute therapeutic audio' : 'Mute therapeutic audio'}
-                title={audio.isMuted ? 'Enable calming background sounds' : 'Disable background sounds'}
-              >
-                {audio.isMuted ? (
-                  <VolumeX className="w-5 h-5 text-muted-foreground" />
-                ) : (
-                  <Volume2 className="w-5 h-5 text-primary" />
-                )}
-              </Button>
-            </motion.div>
+                {/* Gradient Orbs */}
+                <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] rounded-full bg-white opacity-[0.06] blur-[60px] animate-float-slow"></div>
+                <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] rounded-full bg-[#A8D5BA] opacity-[0.08] blur-[80px] animate-float-slow" style={{ animationDelay: '2s' }}></div>
 
-            {/* Language Selector */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex gap-2"
-            >
-              {languages.map((lang) => (
-                <Button
-                  key={lang.code}
-                  variant={selectedLanguage === lang.code ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => handleLanguageChange(lang.code)}
-                  className="text-sm font-medium"
-                >
-                  <span className="mr-1">{lang.flag}</span>
-                  {lang.name}
-                </Button>
-              ))}
-            </motion.div>
+                {/* Floating Particles */}
+                {particles.map((p) => (
+                    <div
+                        key={p.id}
+                        className="absolute bg-white rounded-full animate-float-particle"
+                        style={{
+                            width: p.size,
+                            height: p.size,
+                            left: p.left,
+                            top: p.top,
+                            opacity: p.opacity,
+                            animationDelay: p.delay,
+                            animationDuration: p.duration,
+                            filter: p.blur ? 'blur(0.5px)' : 'none',
+                        }}
+                    ></div>
+                ))}
 
-            {/* Theme Toggle */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <ModeToggle />
-            </motion.div>
-          </div>
-        </div>
-      </header>
-
-      {/* Audio Status Indicator */}
-      {audio.isBackgroundAudioLoaded && !audio.isMuted && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed top-20 right-6 z-50"
-        >
-          <Badge variant="secondary" className="flex items-center gap-2 bg-primary/10 text-primary border-primary/20">
-            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            Therapeutic audio playing
-          </Badge>
-        </motion.div>
-      )}
-
-      {/* Hero Section */}
-      <main className="relative z-10 px-6 py-12">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-8"
-          >
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-              {t('app.tagline')}
-            </Badge>
-
-            <h2 className="text-4xl md:text-6xl font-playfair font-bold text-foreground mb-6 leading-tight">
-              You're Not Alone
-              <span className="text-transparent bg-clip-text bg-gradient-primary block mt-2">
-                In This Journey
-              </span>
-            </h2>
-
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {t('app.description')}. Anonymous, safe, and always available when you need support.
-            </p>
-          </motion.div>
-
-          {/* Portal Selection */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mb-12"
-          >
-            <h3 className="text-2xl font-semibold text-foreground mb-6">Choose Your Portal</h3>
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {/* Student Portal */}
-              <Card className="glass-card p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => navigate('/auth/sign-in?role=student')}>
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <GraduationCap className="h-8 w-8 text-white" />
-                  </div>
-                  <h4 className="text-xl font-semibold text-foreground mb-2">Student Portal</h4>
-                  <p className="text-muted-foreground mb-4">Access mental health resources, anonymous chat, and personalized support tools.</p>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    Enter Student Portal
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </div>
-              </Card>
-
-              {/* Counselor Portal */}
-              <Card className="glass-card p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => navigate('/counselor/login')}>
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <UserCheck className="h-8 w-8 text-white" />
-                  </div>
-                  <h4 className="text-xl font-semibold text-foreground mb-2">Counselor Portal</h4>
-                  <p className="text-muted-foreground mb-4">Professional dashboard for managing students, sessions, and crisis interventions.</p>
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                    Enter Counselor Portal
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </div>
-              </Card>
+                {/* Corner Borders */}
+                <div className="absolute top-[45px] left-[45px] w-[55px] h-[55px] border-l-[4px] border-t-[4px] border-white/90 rounded-tl-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
+                <div className="absolute top-[45px] right-[45px] w-[55px] h-[55px] border-r-[4px] border-t-[4px] border-white/90 rounded-tr-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
+                <div className="absolute bottom-[45px] left-[45px] w-[55px] h-[55px] border-l-[4px] border-b-[4px] border-white/90 rounded-bl-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
+                <div className="absolute bottom-[45px] right-[45px] w-[55px] h-[55px] border-r-[4px] border-b-[4px] border-white/90 rounded-br-[16px] shadow-[0_0_20px_rgba(255,255,255,0.4)] animate-pulse-glow z-10"></div>
             </div>
-          </motion.div>
 
-          {/* Quick Access for Students */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
-          >
-            <Button
-              size="lg"
-              onClick={() => navigate('/auth/sign-in?role=student')}
-              className="btn-ambient px-8 py-4 text-lg font-medium"
-            >
-              Get Started
-              <ArrowRight className="ml-3 w-6 h-6" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => navigate('/auth/sign-in?role=student')}
-              className="px-8 py-4 text-lg font-medium glass-card"
-            >
-              Take Assessment
-            </Button>
-          </motion.div>
+            {/* NAVIGATION BAR */}
+            <div className={`fixed top-0 w-full z-50 flex justify-center transition-all duration-700 delay-0 ease-out ${isScrolled ? 'pt-2' : 'pt-[33px]'}`}>
+                <nav className={`w-full max-w-[1240px] h-[72px] mx-6 md:mx-[60px] flex items-center justify-between rounded-[16px] px-[60px] transition-all duration-300 bg-white/25 backdrop-blur-[20px] border border-white/30 shadow-[0_8px_32px_rgba(31,38,135,0.15)]`}>
 
+                    {/* Logo */}
+                    <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+                        <div className="w-[32px] h-[32px] rounded-full bg-white flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 group-hover:scale-105">
+                            <Plus className="w-[16px] h-[16px] text-[#6B9AC4]" strokeWidth={3.5} />
+                        </div>
+                        <span className="text-[22px] font-dm font-semibold text-white tracking-tight drop-shadow-sm">Sahara</span>
+                    </div>
 
+                    {/* Links */}
+                    <div className="hidden lg:flex items-center gap-10 text-[15px] font-medium text-white/90">
+                        {['Resources', 'Features', 'Pricing', 'Our Counselors'].map((item) => (
+                            <a key={item} href="#" className="hover:text-white transition-all duration-300 relative group py-2 px-4 hover:bg-white/15 rounded-lg">
+                                {item}
+                                <span className="absolute bottom-1 left-4 right-4 h-[2px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center shadow-[0_0_8px_rgba(255,255,255,0.5)]"></span>
+                            </a>
+                        ))}
+                    </div>
 
-          {/* Floating Background Blobs */}
-          <div className="absolute top-1/4 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float -z-10" />
-          <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float -z-10" style={{ animationDelay: '2s' }} />
-
-          {/* Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8, type: "spring" }}
-            className="mb-16 relative"
-          >
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-2xl blur opacity-30 animate-pulse"></div>
-            <Card className="glass-card p-2 overflow-hidden relative shadow-2xl">
-              <img
-                src={heroImage}
-                alt="Students in a supportive, calming environment representing mental health wellness"
-                className="w-full h-[500px] object-cover rounded-xl transform hover:scale-105 transition-transform duration-700 ease-out"
-              />
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Emergency Notice */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="max-w-4xl mx-auto"
-        >
-          <Card className="glass-card p-6 border-warning/30 bg-warning/5">
-            <div className="flex items-center gap-3 mb-3">
-              <Shield className="w-5 h-5 text-warning" />
-              <h4 className="font-semibold text-foreground">
-                Crisis Support Available 24/7
-              </h4>
+                    {/* Actions */}
+                    <div className="flex items-center gap-4">
+                        <Button variant="ghost" className="hidden md:flex text-[15px] font-semibold hover:bg-white/15 px-6 rounded-[10px] text-white hover:text-white transition-all">
+                            Login
+                        </Button>
+                        <Button className="rounded-[24px] bg-white text-[#2E5A7D] hover:bg-white px-8 h-[48px] text-[15px] font-bold shadow-[0_4px_16px_rgba(255,255,255,0.3)] hover:shadow-[0_8px_24px_rgba(255,255,255,0.4)] hover:-translate-y-[2px] hover:scale-[1.02] transition-all duration-300 border-none">
+                            Sign up
+                        </Button>
+                        <Button variant="ghost" size="icon" className="lg:hidden text-white">
+                            <Menu className="w-6 h-6" />
+                        </Button>
+                    </div>
+                </nav>
             </div>
-            <p className="text-muted-foreground">
-              {t('consent.emergency_notice')} <strong>{t('consent.emergency_helpline')}</strong>
-            </p>
-          </Card>
-        </motion.div>
-      </main >
-    </div >
-  );
+
+            {/* HERO SECTION */}
+            <section className="pt-[180px] pb-[120px] px-[100px] max-w-[1240px] mx-auto min-h-[calc(100vh-80px)] flex flex-col items-center text-center relative z-10">
+
+                <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-[820px] mx-auto z-20">
+                    <h1 className="text-white text-[44px] md:text-[72px] font-dm font-bold leading-[1.1] tracking-[-0.02em] mb-[32px] drop-shadow-[0_2px_10px_rgba(0,0,0,0.15)]">
+                        Students, not struggles
+                    </h1>
+
+                    <div className="space-y-[14px] text-white/95 text-[20px] font-normal max-w-[780px] mx-auto leading-[1.7]">
+                        <p className="drop-shadow-sm">Get instant support from <span className="font-bold text-white px-1.5 py-0.5 rounded bg-gradient-to-r from-white/10 to-transparent shadow-[0_0_12px_rgba(255,255,255,0.3)]">AI counselors</span> that understand you.</p>
+                        <p className="drop-shadow-sm">Access <span className="font-bold text-white shadow-[0_0_12px_rgba(255,255,255,0.3)]">unlimited</span>, <span className="font-bold text-white shadow-[0_0_12px_rgba(255,255,255,0.3)]">professional-grade</span> mental health resources.</p>
+                        <p className="drop-shadow-sm">Save time, reduce stress with <span className="font-bold text-white shadow-[0_0_12px_rgba(255,255,255,0.3)]">24/7 confidential</span> support.</p>
+                    </div>
+
+                    {/* Portal Buttons */}
+                    <div className="mt-[72px] animate-fade-in-up delay-600">
+                        <div className="flex flex-col items-center mb-[28px]">
+                            <p className="text-[12px] uppercase text-white/80 tracking-[0.2em] font-inter font-semibold mb-[12px]">CHOOSE YOUR PORTAL</p>
+                            <div className="w-[60px] h-[2px] bg-white/30"></div>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-[24px]">
+                            {/* Student Portal */}
+                            <div
+                                onClick={() => navigate('/auth/sign-in?role=student')}
+                                className="group w-full md:w-[240px] h-[58px] rounded-[29px] bg-gradient-to-br from-white to-[#F8F9FA] shadow-[0_8px_24px_rgba(255,255,255,0.35)] hover:shadow-[0_12px_32px_rgba(255,255,255,0.45)] flex items-center justify-between px-7 cursor-pointer transform hover:-translate-y-[3px] hover:scale-[1.03] transition-all duration-400 ease-out-back"
+                            >
+                                <span className="text-[#2E5A7D] text-[17px] font-bold group-hover:pl-1 transition-all">Student Portal</span>
+                                <ArrowRight className="w-[16px] h-[16px] text-[#2E5A7D] transform group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2.5} />
+                            </div>
+
+                            {/* Counselor Portal */}
+                            <div
+                                onClick={() => navigate('/counselor/login')}
+                                className="group w-full md:w-[240px] h-[58px] rounded-[29px] bg-white/10 backdrop-blur-[10px] border-[2.5px] border-white/80 hover:border-white hover:bg-white/25 flex items-center justify-center cursor-pointer transform hover:-translate-y-[3px] shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(255,255,255,0.2)] transition-all duration-300"
+                            >
+                                <span className="text-white text-[17px] font-semibold whitespace-nowrap">Counselor Portal</span>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Scroll Indicator */}
+                <div className="absolute bottom-[40px] left-1/2 transform -translate-x-1/2 animate-bounce-slow opacity-80">
+                    <ChevronDown className="w-8 h-8 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" strokeWidth={1.5} />
+                </div>
+            </section>
+
+            {/* FEATURES SECTION (Modular) */}
+            <div className="relative z-10 bg-slate-50">
+                <FeaturesGrid />
+            </div>
+        </div>
+    );
 };
 
 export default LandingPage;
