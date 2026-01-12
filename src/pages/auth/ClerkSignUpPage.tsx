@@ -42,6 +42,7 @@ const ClerkSignUpPage = () => {
         />
       </div>
     </SaharaAuthLayout>
+  )
 }
 
 export default ClerkSignUpPage

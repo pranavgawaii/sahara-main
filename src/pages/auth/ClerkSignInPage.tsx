@@ -41,6 +41,7 @@ const ClerkSignInPage = () => {
         />
       </div>
     </SaharaAuthLayout>
+  )
 }
 
 const ClerkSignUpPage = () => {
