@@ -10,9 +10,6 @@ export const UnifiedFooter = () => {
                     {/* Brand Column */}
                     <div className="md:col-span-4">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-                                <Plus className="w-5 h-5 text-[#0F172A]" strokeWidth={3.5} />
-                            </div>
                             <span className="text-2xl font-bold font-dm">Sahara</span>
                         </div>
                         <p className="text-slate-400 font-inter leading-relaxed mb-6">

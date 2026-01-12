@@ -93,10 +93,7 @@ export const LandingPage = () => {
 
                     {/* Logo */}
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-                        <div className="w-[32px] h-[32px] rounded-full bg-white flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 group-hover:scale-105">
-                            <Plus className="w-[16px] h-[16px] text-[#6B9AC4]" strokeWidth={3.5} />
-                        </div>
-                        <span className="text-[22px] font-dm font-semibold text-white tracking-tight drop-shadow-sm">Sahara</span>
+                        <span className="text-[22px] font-dm font-semibold text-white tracking-tight drop-shadow-sm group-hover:opacity-90 transition-opacity">Sahara</span>
                     </div>
 
                     {/* Links */}
@@ -125,7 +122,7 @@ export const LandingPage = () => {
             </div>
 
             {/* HERO SECTION */}
-            <section className="pt-[180px] pb-[120px] px-[100px] max-w-[1240px] mx-auto min-h-[calc(100vh-80px)] flex flex-col items-center text-center relative z-10">
+            <section className="pt-[220px] pb-[160px] px-[100px] max-w-[1240px] mx-auto min-h-[calc(100vh-80px)] flex flex-col items-center text-center relative z-10">
 
                 <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-[820px] mx-auto z-20">
                     <h1 className="text-white text-[44px] md:text-[72px] font-dm font-bold leading-[1.1] tracking-[-0.02em] mb-[32px] drop-shadow-[0_2px_10px_rgba(0,0,0,0.15)]">
