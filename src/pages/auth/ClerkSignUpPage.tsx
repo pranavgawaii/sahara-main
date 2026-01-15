@@ -31,8 +31,8 @@ const ClerkSignUpPage = () => {
               dividerLine: "bg-slate-200",
               dividerText: "text-slate-400 bg-transparent flex-1",
               formFieldInput: "rounded-xl border-slate-200 focus:border-[#2E5A7D] focus:ring-[#2E5A7D]/20 bg-white/50",
-              clerkBranding: "hidden",
-              developmentBadge: "hidden"
+              clerkBranding: "!hidden",
+              developmentBadge: "!hidden"
             },
             layout: {
               socialButtonsPlacement: 'bottom',

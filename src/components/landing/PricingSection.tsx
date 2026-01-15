@@ -65,24 +65,38 @@ export const PricingSection = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.15
+                            }
+                        }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
                     {plans.map((plan, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: plan.delay, duration: 0.5 }}
+                            variants={{
+                                hidden: { opacity: 0, y: 40 },
+                                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                            }}
                             className="relative"
                         >
                             {plan.popular && (
                                 <div className="absolute -top-4 left-0 right-0 flex justify-center z-10">
-                                    <Badge className="bg-[#2E5A7D] hover:bg-[#1A3A5A] text-white px-4 py-1">
+                                    <Badge className="bg-[#2E5A7D] hover:bg-[#1A3A5A] text-white px-4 py-1 shadow-lg">
                                         Most Popular
                                     </Badge>
                                 </div>
                             )}
-                            <Card className={`h-full flex flex-col ${plan.popular ? 'border-2 border-[#2E5A7D] shadow-xl scale-105' : 'border border-slate-200 shadow-md'} bg-white transition-all hover:shadow-lg`}>
+                            <Card className={`h-full flex flex-col ${plan.popular ? 'border-2 border-[#2E5A7D] shadow-2xl scale-105 z-10' : 'border border-slate-200 shadow-md hover:shadow-xl'} bg-white transition-all duration-300 hover:-translate-y-1`}>
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold text-gray-900 font-dm">{plan.name}</CardTitle>
                                     <div className="mt-4 mb-2">
@@ -104,7 +118,7 @@ export const PricingSection = () => {
                                 </CardContent>
                                 <CardFooter>
                                     <Button
-                                        className={`w-full font-dm ${plan.popular ? 'bg-[#2E5A7D] hover:bg-[#1A3A5A]' : 'bg-slate-100 text-slate-800 hover:bg-slate-200'}`}
+                                        className={`w-full font-dm py-6 text-md shadow-md transition-transform active:scale-95 ${plan.popular ? 'bg-[#2E5A7D] hover:bg-[#1A3A5A]' : 'bg-slate-100 text-slate-800 hover:bg-slate-200'}`}
                                     >
                                         {plan.cta}
                                     </Button>
@@ -112,7 +126,7 @@ export const PricingSection = () => {
                             </Card>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

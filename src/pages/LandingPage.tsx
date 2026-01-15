@@ -150,22 +150,54 @@ const HeroSection = () => {
 
             {/* HERO CONTENT */}
             <div className="relative z-10 flex flex-col items-center justify-center flex-grow w-full px-6 pt-[160px] pb-[100px] text-center max-w-[1200px]">
-                <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-[900px] mx-auto">
-                    <h1 className="text-white text-[48px] md:text-[72px] font-dm font-bold leading-[1.1] tracking-[-0.02em] mb-[32px] drop-shadow-lg">
-                        Mental Wellness for the <br className="hidden md:block" />Modern Student
-                    </h1>
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.2,
+                                delayChildren: 0.3
+                            }
+                        }
+                    }}
+                    className="max-w-[900px] mx-auto"
+                >
+                    <motion.h1
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+                        }}
+                        className="text-white text-[48px] md:text-[72px] font-dm font-bold leading-[1.1] tracking-[-0.02em] mb-[32px] drop-shadow-lg"
+                    >
+                        Mental Wellness<br className="hidden md:block" /> Reimagined for Students
+                    </motion.h1>
 
-                    <div className="space-y-5 text-white/95 text-[20px] md:text-[24px] font-medium max-w-[800px] mx-auto leading-relaxed">
+                    <motion.div
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                        }}
+                        className="space-y-5 text-white/95 text-[20px] md:text-[24px] font-medium max-w-[800px] mx-auto leading-relaxed"
+                    >
                         <p className="drop-shadow-sm">
-                            Instant, anonymous support from <span className="font-bold text-white bg-white/15 px-3 py-1 rounded-xl border border-white/20 backdrop-blur-md shadow-sm">AI Counselors</span>.
+                            Experience instant, anonymous support from <span className="font-bold text-white bg-white/15 px-3 py-1 rounded-xl border border-white/20 backdrop-blur-md shadow-sm">Empathetic AI Counselors</span>.
                         </p>
                         <p className="drop-shadow-sm text-white/90 text-[18px] md:text-[20px] font-normal mt-2">
-                            Unlimited access to <span className="font-semibold text-white border-b border-white/40 pb-0.5 hover:border-white transition-colors">Professional Resources</span>, available <span className="font-bold text-white">24/7</span>.
+                            Unlimited access to <span className="font-semibold text-white border-b border-white/40 pb-0.5 hover:border-white transition-colors">Professional Resources</span>, available <span className="font-bold text-white">24/7</span>—because your mental health matters.
                         </p>
-                    </div>
+                    </motion.div>
 
                     {/* Portal Buttons */}
-                    <div className="mt-[80px] animate-fade-in-up delay-300">
+                    <motion.div
+                        variants={{
+                            hidden: { opacity: 0, scale: 0.95 },
+                            visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
+                        }}
+                        className="mt-[80px]"
+                    >
                         <div className="flex flex-col items-center mb-[32px]">
                             <p className="text-[12px] uppercase text-white/70 tracking-[0.25em] font-inter font-bold mb-[16px]">CHOOSE YOUR PORTAL</p>
                             <div className="w-[40px] h-[3px] bg-white/20 rounded-full"></div>
@@ -189,7 +221,7 @@ const HeroSection = () => {
                                 <span className="text-white text-[17px] font-bold">Counselor Portal</span>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
 
                 {/* Bouncing Arrow */}

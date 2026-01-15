@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, animate } from 'framer-motion';
 import { Users, Building2, Globe, Award } from 'lucide-react';
 
 const stats = [
@@ -11,7 +11,7 @@ const stats = [
         bg: "bg-blue-50"
     },
     {
-        label: "Partner Universities",
+        label: "Trusted by Campuses",
         value: "50+",
         icon: Building2,
         color: "text-[#6B9AC4]",
@@ -33,6 +33,32 @@ const stats = [
     }
 ];
 
+const Counter = ({ value, duration = 2 }) => {
+    // Parse value to find number and suffix/prefix
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+    const suffix = value.replace(/[0-9.]/g, '');
+    const nodeRef = React.useRef(null);
+
+    React.useEffect(() => {
+        const node = nodeRef.current;
+        if (!node) return;
+
+        const controls = animate(0, numericValue, {
+            duration: duration,
+            ease: "easeOut",
+            onUpdate: (v) => {
+                // Determine decimal places based on original value
+                const decimalPlaces = value.includes('.') ? 1 : 0;
+                node.textContent = v.toFixed(decimalPlaces) + suffix;
+            }
+        });
+
+        return () => controls.stop();
+    }, [numericValue, suffix, duration, value]);
+
+    return <span ref={nodeRef}>{value}</span>; // Initial render
+};
+
 export const StatsSection = () => {
     return (
         <section className="py-24 bg-white">
@@ -51,7 +77,7 @@ export const StatsSection = () => {
                                 <stat.icon className={`w-8 h-8 ${stat.color} opacity-80`} strokeWidth={1.5} />
                             </div>
                             <h3 className="text-4xl md:text-5xl font-bold text-[#2E5A7D] font-dm mb-3 tracking-tight">
-                                {stat.value}
+                                <Counter value={stat.value} />
                             </h3>
                             <p className="text-slate-500 font-medium font-inter text-sm uppercase tracking-wider">
                                 {stat.label}

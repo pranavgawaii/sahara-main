@@ -59,31 +59,45 @@ export const ResourcesSection = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.1
+                            }
+                        }
+                    }}
+                    className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+                >
                     {resources.map((resource, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            className="bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 border border-transparent hover:border-slate-100 group"
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                            }}
+                            className="bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 border border-transparent hover:border-slate-100 group flex flex-col items-start h-full"
                         >
-                            <div className={`w-12 h-12 rounded-xl ${resource.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                            <div className={`w-12 h-12 rounded-xl ${resource.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
                                 <resource.icon className={`w-6 h-6 ${resource.color}`} />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-800 mb-3 font-dm">
+                            <h3 className="text-xl font-bold text-slate-800 mb-3 font-dm group-hover:text-[#2E5A7D] transition-colors">
                                 {resource.title}
                             </h3>
-                            <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                            <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">
                                 {resource.desc}
                             </p>
-                            <Button variant="link" className={`p-0 h-auto font-semibold ${resource.color} hover:no-underline group-hover:translate-x-1 transition-transform`}>
+                            <Button variant="link" className={`p-0 h-auto font-semibold ${resource.color} hover:no-underline group-hover:translate-x-1 transition-transform mt-auto`}>
                                 Learn more →
                             </Button>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

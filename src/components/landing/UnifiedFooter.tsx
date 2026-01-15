@@ -14,7 +14,7 @@ export const UnifiedFooter = () => {
                             <span className="text-2xl font-bold font-dm">Sahara</span>
                         </div>
                         <p className="text-slate-400 font-inter leading-relaxed mb-6">
-                            Empowering students with accessible, anonymous, and professional mental health support. Your well-being is our mission.
+                            Building a resilient future for students through accessible, anonymous, and professional mental health support. Your mind matters.
                         </p>
                         <div className="flex gap-4">
                             <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#2E5A7D] transition-colors">

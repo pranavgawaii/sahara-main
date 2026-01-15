@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import {
     Accordion,
     AccordionContent,
@@ -9,7 +10,7 @@ import {
 const faqs = [
     {
         question: "Is my data really anonymous?",
-        answer: "Yes, absolutely. We use end-to-end encryption for all chats and do not store personally identifiable information linked to your mental health records. You can even use an alias."
+        answer: "Yes, absolutely. We use industry-leading End-to-End Encryption for all chats. We do not store personally identifiable information linked to your health records."
     },
     {
         question: "How do I access counseling services?",
@@ -20,8 +21,12 @@ const faqs = [
         answer: "The Basic plan is completely free for all verified students. This includes access to our resource library, community forums, and AI companion. Premium features are available for a small subscription."
     },
     {
+        question: "Is this a replacement for real therapy?",
+        answer: "Sahara is designed as a first line of support and a daily wellness companion. While helpful, it does not replace clinical therapy. We facilitate connections to professionals when deeper care is needed."
+    },
+    {
         question: "Who are the counselors?",
-        answer: "Our counselors are licensed professionals and senior psychology students who generally volunteer or work with partner institutions. All are vetted and trained in crisis management."
+        answer: "Our human counselors are licensed professionals and supervised senior psychology students from Top Universities. All are rigorously vetted and trained in crisis management."
     }
 ];
 
@@ -40,14 +45,22 @@ export const FAQSection = () => {
 
                 <Accordion type="single" collapsible className="w-full">
                     {faqs.map((faq, index) => (
-                        <AccordionItem key={index} value={`item-${index}`} className="border-b-slate-200">
-                            <AccordionTrigger className="text-lg font-medium text-gray-900 font-dm hover:text-[#2E5A7D] text-left">
-                                {faq.question}
-                            </AccordionTrigger>
-                            <AccordionContent className="text-gray-600 font-inter leading-relaxed">
-                                {faq.answer}
-                            </AccordionContent>
-                        </AccordionItem>
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
+                        >
+                            <AccordionItem value={`item-${index}`} className="border-b-slate-200">
+                                <AccordionTrigger className="text-lg font-medium text-gray-900 font-dm hover:text-[#2E5A7D] text-left transition-colors">
+                                    {faq.question}
+                                </AccordionTrigger>
+                                <AccordionContent className="text-gray-600 font-inter leading-relaxed">
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        </motion.div>
                     ))}
                 </Accordion>
             </div>

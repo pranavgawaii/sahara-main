@@ -7,42 +7,42 @@ const features = [
     {
         icon: Shield,
         title: "Anonymous & Secure",
-        desc: "Your identity is protected with military-grade encryption. Speak freely without fear.",
+        desc: "Your identity is protected with End-to-End Encryption. Share your thoughts freely in a safe, judgment-free zone.",
         color: "text-blue-500",
         bg: "bg-blue-50"
     },
     {
         icon: Clock,
         title: "24/7 Availability",
-        desc: "Access support whenever you need it. Crisis don't wait for business hours.",
+        desc: "Access support whenever you need it. Crises don't wait for business hours, and neither do we.",
         color: "text-purple-500",
         bg: "bg-purple-50"
     },
     {
         icon: Heart,
-        title: "Empathetic AI",
-        desc: "Our AI counselors are trained to listen, understand, and support you securely.",
+        title: "Empathetic AI Companion",
+        desc: "Our AI is trained to listen with empathy, understanding your unique context to provide relevant support.",
         color: "text-rose-500",
         bg: "bg-rose-50"
     },
     {
         icon: Radio,
         title: "Daily Check-ins",
-        desc: "Track your mood and progress with simple, non-intrusive daily interactions.",
+        desc: "Build emotional resilience with simple, non-intrusive daily mood tracking and reflection prompts.",
         color: "text-amber-500",
         bg: "bg-amber-50"
     },
     {
         icon: Lock,
         title: "Private Journaling",
-        desc: "A safe space to write down your thoughts. Encrypted and for your eyes only.",
+        desc: "A secure digital space to untangle your thoughts. Fully encrypted and private—for your eyes only.",
         color: "text-emerald-500",
         bg: "bg-emerald-50"
     },
     {
         icon: Zap,
-        title: "Instant Matching",
-        desc: "Connect with professional human counselors instantly when you need extra support.",
+        title: "Instant Professional Access",
+        desc: "Seamlessly connect with certified human counselors when you need specialized, in-depth care.",
         color: "text-cyan-500",
         bg: "bg-cyan-50"
     }
@@ -84,19 +84,33 @@ export const FeaturesGrid = () => {
                     </motion.p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.1
+                            }
+                        }
+                    }}
+                    className="grid md:grid-cols-3 gap-8"
+                >
                     {features.map((feature, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                            }}
                         >
-                            <Card className="p-8 h-full border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(46,90,125,0.1)] transition-all duration-500 hover:-translate-y-2 rounded-[24px] bg-white group cursor-default relative overflow-hidden">
-                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.bg} rounded-bl-[100px] -mr-8 -mt-8 opacity-50 transition-transform group-hover:scale-110 duration-700`}></div>
+                            <Card className="p-8 h-full border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(46,90,125,0.12)] transition-all duration-500 hover:-translate-y-2 rounded-[24px] bg-white group cursor-default relative overflow-hidden">
+                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.bg} rounded-bl-[100px] -mr-8 -mt-8 opacity-50 transition-transform group-hover:scale-125 duration-700 ease-out`}></div>
 
-                                <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 text-[#2E5A7D] group-hover:scale-110 transition-transform duration-300 relative z-10`}>
+                                <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 text-[#2E5A7D] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10 box-decoration-clone`}>
                                     <feature.icon className={`w-7 h-7 ${feature.color}`} />
                                 </div>
 
@@ -104,13 +118,13 @@ export const FeaturesGrid = () => {
                                     {feature.title}
                                 </h3>
 
-                                <p className="text-slate-500 leading-relaxed text-sm font-inter relative z-10">
+                                <p className="text-slate-500 leading-relaxed text-sm font-inter relative z-10 group-hover:text-slate-600 transition-colors">
                                     {feature.desc}
                                 </p>
                             </Card>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

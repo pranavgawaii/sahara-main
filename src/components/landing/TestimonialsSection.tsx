@@ -6,22 +6,22 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const testimonials = [
     {
-        content: "Sahara has been a lifesaver. The anonymous chat feature helped me open up about my anxiety without fear of judgment.",
-        author: "Computer Science Student",
-        role: "Year 3",
-        avatar: "S"
+        content: "I used to feel overwhelmed by exam pressure. The AI counselor helped me ground myself at 3 AM when no one else was awake. It felt like someone was finally listening.",
+        author: "Priya S.",
+        role: "Computer Science Student",
+        avatar: "P"
     },
     {
-        content: "As a counselor, this platform allows me to reach students who wouldn't normally walk into my office. It's revolutionizing campus support.",
-        author: "Dr. Anjali Gupta",
-        role: "Senior Counselor",
+        content: "As a campus counselor, I can't reach everyone. Sahara acts as a crucial first line of support, allowing us to focus on students who need intensive care.",
+        author: "Dr. Anjali G.",
+        role: "Senior Campus Counselor",
         avatar: "A"
     },
     {
-        content: "The mental health resources are curated perfectly. I use the meditation tools every day before exams.",
-        author: "Priya Patel",
-        role: "Year 2 Student",
-        avatar: "P"
+        content: "The meditation tools and anonymous chat are a game-changer. I don't feel judged anymore, and I've learned so many ways to manage my daily stress.",
+        author: "Rahul M.",
+        role: "Architecture Student",
+        avatar: "R"
     }
 ];
 
@@ -44,18 +44,32 @@ export const TestimonialsSection = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.2
+                            }
+                        }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
                     {testimonials.map((testimonial, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.2, duration: 0.5 }}
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                            }}
                         >
-                            <Card className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300 bg-white">
+                            <Card className="h-full border-none shadow-md hover:shadow-2xl transition-all duration-300 bg-white hover:-translate-y-2 group">
                                 <CardContent className="p-8 flex flex-col h-full">
-                                    <Quote className="w-10 h-10 text-blue-100 mb-6 fill-current" />
+                                    <Quote className="w-10 h-10 text-blue-100 mb-6 fill-current group-hover:text-blue-200 transition-colors" />
                                     <p className="text-gray-700 italic font-inter mb-6 leading-relaxed flex-grow">
                                         "{testimonial.content}"
                                     </p>
@@ -74,7 +88,7 @@ export const TestimonialsSection = () => {
                             </Card>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
