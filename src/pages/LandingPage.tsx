@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Menu } from 'lucide-react';
+import { ArrowRight, Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StatsSection } from '@/components/landing/StatsSection';
 import { FeaturesGrid } from '@/components/landing/FeaturesGrid';
@@ -183,7 +183,17 @@ const HeroSection = () => {
                         className="space-y-5 text-white/95 text-[20px] md:text-[24px] font-medium max-w-[800px] mx-auto leading-relaxed"
                     >
                         <p className="drop-shadow-sm">
-                            Experience instant, anonymous support from <span className="font-bold text-white bg-white/15 px-3 py-1 rounded-xl border border-white/20 backdrop-blur-md shadow-sm">Empathetic AI Counselors</span>.
+                            Experience instant, anonymous support from{' '}
+                            <motion.span
+                                whileHover={{ scale: 1.05 }}
+                                className="inline-flex items-center gap-2 font-bold text-white bg-white/20 px-4 py-1.5 rounded-full border border-white/30 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/30 transition-all duration-300 cursor-default align-middle"
+                            >
+                                <Sparkles className="w-4 h-4 text-yellow-300 fill-current animate-pulse" />
+                                <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent drop-shadow-sm">
+                                    Empathetic AI Counselors
+                                </span>
+                            </motion.span>
+                            .
                         </p>
                         <p className="drop-shadow-sm text-white/90 text-[18px] md:text-[20px] font-normal mt-2">
                             Unlimited access to <span className="font-semibold text-white border-b border-white/40 pb-0.5 hover:border-white transition-colors">Professional Resources</span>, available <span className="font-bold text-white">24/7</span>—because your mental health matters.
