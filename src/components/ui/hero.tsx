@@ -190,8 +190,8 @@ export const PremiumHero = () => {
                     </p>
 
                     <div className="flex flex-row gap-3 flex-wrap justify-center">
-                        <Button size="sm" className="gap-4" variant="outline">
-                            Explore UI CAT <MoveRight className="w-4 h-4" />
+                        <Button size="sm" className="gap-4" variant="outline" onClick={() => document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' })}>
+                            Explore Resources <MoveRight className="w-4 h-4" />
                         </Button>
 
                     </div>
