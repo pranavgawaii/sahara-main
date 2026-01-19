@@ -61,9 +61,9 @@ const Counter = ({ value, duration = 2 }) => {
 
 export const StatsSection = () => {
     return (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
             <div className="max-w-[1240px] mx-auto px-6 md:px-20">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-b border-slate-100 pb-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-b border-white/10 pb-12">
                     {stats.map((stat, index) => (
                         <motion.div
                             key={index}
@@ -76,10 +76,10 @@ export const StatsSection = () => {
                             <div className="mb-4 transform transition-transform duration-500 group-hover:-translate-y-1">
                                 <stat.icon className={`w-8 h-8 ${stat.color} opacity-80`} strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-4xl md:text-5xl font-bold text-[#2E5A7D] font-dm mb-3 tracking-tight">
+                            <h3 className="text-4xl md:text-5xl font-bold text-white font-dm mb-3 tracking-tight">
                                 <Counter value={stat.value} />
                             </h3>
-                            <p className="text-slate-500 font-medium font-inter text-sm uppercase tracking-wider">
+                            <p className="text-slate-400 font-medium font-inter text-sm uppercase tracking-wider">
                                 {stat.label}
                             </p>
                         </motion.div>

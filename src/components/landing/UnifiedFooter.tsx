@@ -3,7 +3,7 @@ import { Plus, Twitter, Linkedin, Instagram, Mail, Github } from 'lucide-react';
 
 export const UnifiedFooter = () => {
     return (
-        <footer className="bg-[#0F172A] text-white pt-20 pb-10">
+        <footer className="bg-[#050505] text-white pt-20 pb-10 border-t border-white/10">
             <div className="max-w-[1240px] mx-auto px-6 md:px-20">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
 

@@ -50,11 +50,11 @@ const features = [
 
 export const FeaturesGrid = () => {
     return (
-        <section className="py-32 bg-slate-50 relative overflow-hidden">
+        <section className="py-32 bg-[#0a0a0a] relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-0 left-1/4 w-[1000px] h-[1000px] bg-blue-50/50 rounded-full blur-[120px] mix-blend-multiply"></div>
-                <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-indigo-50/50 rounded-full blur-[100px] mix-blend-multiply"></div>
+                <div className="absolute top-0 left-1/4 w-[1000px] h-[1000px] bg-blue-900/20 rounded-full blur-[120px] mix-blend-screen"></div>
+                <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-indigo-900/20 rounded-full blur-[100px] mix-blend-screen"></div>
             </div>
 
             <div className="max-w-[1240px] mx-auto px-6 md:px-20 relative z-10">
@@ -70,7 +70,7 @@ export const FeaturesGrid = () => {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-5xl font-bold text-[#2E5A7D] font-dm mb-6 leading-tight"
+                        className="text-4xl md:text-5xl font-bold text-white font-dm mb-6 leading-tight"
                     >
                         Professional Care,<br />Redefined for Students.
                     </motion.h2>
@@ -78,7 +78,7 @@ export const FeaturesGrid = () => {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-lg text-slate-500 font-inter leading-relaxed"
+                        className="text-lg text-slate-400 font-inter leading-relaxed"
                     >
                         We combine advanced AI technology with human empathy to provide a comprehensive mental health ecosystem that is accessible, private, and effective.
                     </motion.p>
@@ -107,18 +107,18 @@ export const FeaturesGrid = () => {
                                 visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
                             }}
                         >
-                            <Card className="p-8 h-full border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(46,90,125,0.12)] transition-all duration-500 hover:-translate-y-2 rounded-[24px] bg-white group cursor-default relative overflow-hidden">
-                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.bg} rounded-bl-[100px] -mr-8 -mt-8 opacity-50 transition-transform group-hover:scale-125 duration-700 ease-out`}></div>
+                            <Card className="p-8 h-full border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgba(46,90,125,0.2)] transition-all duration-500 hover:-translate-y-2 rounded-[24px] bg-[#111] group cursor-default relative overflow-hidden">
+                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.bg} rounded-bl-[100px] -mr-8 -mt-8 opacity-10 transition-transform group-hover:scale-125 duration-700 ease-out`}></div>
 
-                                <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 text-[#2E5A7D] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10 box-decoration-clone`}>
+                                <div className={`w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-[#2E5A7D] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10 box-decoration-clone border border-white/10`}>
                                     <feature.icon className={`w-7 h-7 ${feature.color}`} />
                                 </div>
 
-                                <h3 className="text-xl font-bold text-slate-800 mb-3 font-dm group-hover:text-[#2E5A7D] transition-colors relative z-10">
+                                <h3 className="text-xl font-bold text-white mb-3 font-dm group-hover:text-[#6B9AC4] transition-colors relative z-10">
                                     {feature.title}
                                 </h3>
 
-                                <p className="text-slate-500 leading-relaxed text-sm font-inter relative z-10 group-hover:text-slate-600 transition-colors">
+                                <p className="text-slate-400 leading-relaxed text-sm font-inter relative z-10 group-hover:text-slate-300 transition-colors">
                                     {feature.desc}
                                 </p>
                             </Card>
