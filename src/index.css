@@ -8,49 +8,89 @@
 
 @layer base {
     :root {
-        /* Background Gradient (Global) */
-        --background: 210 33% 96%;
-        --foreground: 210 50% 15%;
+        /* 
+         * GLOBAL THEME: DARK ARCHIVE / MANUSCRIPT
+         * Mode: Light (Paper) / Dark (Archive)
+         */
 
-        /* Card: White */
+        /* Background: Light Stone-50 / Dark Stone-950 */
+        --background: 60 9% 98%;
+        --foreground: 24 10% 10%;
+
+        /* Card: White / Dark Stone-900 */
         --card: 0 0% 100%;
-        --card-foreground: 210 50% 15%;
+        --card-foreground: 24 10% 10%;
 
         --popover: 0 0% 100%;
-        --popover-foreground: 210 50% 15%;
+        --popover-foreground: 24 10% 10%;
 
-        /* Primary: #2E5A7D (Professional Blue) */
-        /* HSL: 206, 46%, 34% */
-        --primary: 206 46% 34%;
-        --primary-foreground: 0 0% 100%;
+        /* Primary: Amber-900 (Ink) / Amber-50 (Parchment) */
+        --primary: 24 10% 10%;
+        --primary-foreground: 60 9% 98%;
 
-        /* Secondary: #7BA5C8 (Soft Blue) */
-        /* HSL: 208, 43%, 63% */
-        --secondary: 208 43% 63%;
-        --secondary-foreground: 0 0% 100%;
+        /* Secondary: Stone-200 / Stone-800 */
+        --secondary: 60 5% 96%;
+        --secondary-foreground: 24 10% 10%;
 
-        /* Muted */
-        --muted: 210 30% 96%;
-        --muted-foreground: 210 20% 50%;
+        /* Muted: Stone-100 / Stone-900 */
+        --muted: 60 5% 96%;
+        --muted-foreground: 25 5% 45%;
 
-        /* Accent */
-        --accent: 208 43% 63%;
-        --accent-foreground: 0 0% 100%;
+        /* Accent: Amber-100 / Amber-900 */
+        --accent: 60 5% 96%;
+        --accent-foreground: 24 10% 10%;
 
         --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive-foreground: 60 9% 98%;
 
-        --border: 210 20% 85%;
-        --input: 206 46% 34%;
-        --ring: 206 46% 34%;
+        /* Border: Stone-300 / Stone-800 */
+        --border: 20 6% 90%;
+        --input: 20 6% 90%;
+        --ring: 24 10% 10%;
 
-        --radius: 1rem;
+        --radius: 0.3rem;
+        /* Sharper corners for "Archive" feel */
 
-        /* Semantic Themes (Restored) */
+        /* Semantic Themes */
         --relationship-warm: 350 89% 60%;
         --academic-cool: 200 90% 40%;
         --career-fresh: 150 70% 35%;
         --personal-deep: 270 50% 40%;
+    }
+
+    .dark {
+        --background: 24 10% 10%;
+        /* Stone-950 */
+        --foreground: 60 9% 98%;
+        /* Stone-50 */
+
+        --card: 24 10% 10%;
+        --card-foreground: 60 9% 98%;
+
+        --popover: 24 10% 10%;
+        --popover-foreground: 60 9% 98%;
+
+        --primary: 60 9% 98%;
+        --primary-foreground: 24 10% 10%;
+
+        --secondary: 24 6% 15%;
+        /* Stone-900 */
+        --secondary-foreground: 60 9% 98%;
+
+        --muted: 24 6% 15%;
+        --muted-foreground: 24 5% 65%;
+
+        --accent: 24 6% 15%;
+        --accent-foreground: 60 9% 98%;
+
+        --destructive: 0 63% 31%;
+        --destructive-foreground: 60 9% 98%;
+
+        --border: 24 6% 15%;
+        /* Stone-800 */
+        --input: 24 6% 15%;
+        --ring: 36 100% 50%;
+        /* Amber-500 highlighting */
     }
 }
 
@@ -61,7 +101,7 @@
 
     body {
         @apply bg-background text-foreground;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Crimson Pro', serif;
     }
 }
 
@@ -97,7 +137,8 @@
 /* Hide the development badge */
 [class*="cl-developmentBadge"],
 [class*="cl-development-badge"],
-.cl-developmentBadge {
+.cl-developmentBadge,
+#cl-development-badge {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -105,6 +146,7 @@
     height: 0 !important;
     width: 0 !important;
     position: absolute !important;
+    z-index: -9999 !important;
 }
 
 /* Hide the footer branding */

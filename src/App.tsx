@@ -61,7 +61,7 @@ const App = () => {
       <ErrorBoundary>
         {hasClerk ? (
           <ClerkProvider publishableKey={clerkKey}>
-            <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
+            <ThemeProvider defaultTheme="dark" storageKey="sahara-ui-theme">
               <TooltipProvider>
                 {/* Disabled Audio and Cursor for Stability */}
                 {/* <AudioManagerProvider> */}
@@ -290,7 +290,7 @@ const App = () => {
             </ThemeProvider>
           </ClerkProvider>
         ) : (
-          <ThemeProvider defaultTheme="light" storageKey="sahara-ui-theme">
+          <ThemeProvider defaultTheme="dark" storageKey="sahara-ui-theme">
             <TooltipProvider>
               {/* <AudioManagerProvider> */}
               {/* <BackgroundAudio /> */}

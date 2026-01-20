@@ -32,13 +32,13 @@ const faqs = [
 
 export const FAQSection = () => {
     return (
-        <section className="py-24 bg-[#0a0a0a]">
+        <section className="py-24 bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
             <div className="max-w-[800px] mx-auto px-6 md:px-20">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 font-dm">
+                    <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 font-dm">
                         Frequently Asked Questions
                     </h2>
-                    <p className="text-lg text-slate-400 font-inter">
+                    <p className="text-lg text-slate-600 dark:text-slate-400 font-inter">
                         Everything you need to know about Sahara.
                     </p>
                 </div>
@@ -52,11 +52,11 @@ export const FAQSection = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
                         >
-                            <AccordionItem value={`item-${index}`} className="border-b-white/10">
-                                <AccordionTrigger className="text-lg font-medium text-white font-dm hover:text-[#2E5A7D] text-left transition-colors">
+                            <AccordionItem value={`item-${index}`} className="border-b-slate-200 dark:border-b-white/10">
+                                <AccordionTrigger className="text-lg font-medium text-slate-900 dark:text-white font-dm hover:text-[#2E5A7D] dark:hover:text-[#6B9AC4] text-left transition-colors">
                                     {faq.question}
                                 </AccordionTrigger>
-                                <AccordionContent className="text-slate-400 font-inter leading-relaxed">
+                                <AccordionContent className="text-slate-600 dark:text-slate-400 font-inter leading-relaxed">
                                     {faq.answer}
                                 </AccordionContent>
                             </AccordionItem>

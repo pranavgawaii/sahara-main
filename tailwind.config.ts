@@ -17,8 +17,23 @@ export default {
                 inter: ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
                 dm: ["DM Sans", "sans-serif"], // Added for Reference
                 handwriting: ["Caveat", "cursive"],
+                serif: ['"Crimson Pro"', 'serif'],
+                mono: ['"DM Mono"', 'monospace'],
             },
             colors: {
+                stone: {
+                    850: '#1f1c1a',
+                    900: '#1c1917',
+                    950: '#0c0a09',
+                },
+                amber: {
+                    50: '#fffbeb',
+                    600: '#d97706',
+                    700: '#b45309',
+                    800: '#92400e',
+                    900: '#78350f',
+                    950: '#451a03',
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
